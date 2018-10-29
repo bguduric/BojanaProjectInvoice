@@ -254,5 +254,12 @@ namespace FirstProject.Pages.Admin
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(table_contractors));
         }
+ 
+        public void ClearAllFieldsEdit()
+        {
+            EditContractorsPccId().Clear();
+            EditContractorsFirstname().Clear();
+            EditContractorsLastname().Clear();
+        }
     }
 }

@@ -133,5 +133,16 @@ namespace FirstProject.Pages.Contractor
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(empty_tax_identu));
         }
+        public void ClearAllFieldsProfile()
+        {
+            ContrAddress().Clear();
+            ContrBankName().Clear();
+            ContrAccountNumber().Clear();
+            ContrAgencyName().Clear();
+            RegistryCountryNum().Clear();
+            TaxIdentNum().Clear();
+            ContrTelephone().Clear();
+
+        }
     }
 }

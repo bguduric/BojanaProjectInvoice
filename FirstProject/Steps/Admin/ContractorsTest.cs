@@ -20,13 +20,13 @@ namespace FirstProject.Steps.Admin
 //We are testing Contractors page, creating and editing new contractor
 
         string expectedMessage1 = "Input for username is required.";
-        readonly string expectedMessage2 = "Input for PCC Id is required.";
+        string expectedMessage2 = "Input for PCC Id is required.";
         string expectedMessage3 = "Input for first name is required.";
-        readonly string expectedMessage4 = "Input for last name is required.";
+        string expectedMessage4 = "Input for last name is required.";
         string expectedMessage5 = "Input for name must be alphanumeric.";
         string expectedMessage21 = "Please enter a value greater than or equal to 0.";
         string expectedMessage6 = "Input for first name must be alphanumeric.";
-        readonly string expectedMessage7 = "Input for last name must be alphanumeric.";
+        string expectedMessage7 = "Input for last name must be alphanumeric.";
         string expectedMessage8 = "Username already exsits.";
         string expectedMessage9 = "PCC Id already exsits.";
 
@@ -51,18 +51,17 @@ namespace FirstProject.Steps.Admin
         string FirstName2 = GenerateRandomData.GenerateRandomAlpha(6);
         string LastName2 = GenerateRandomData.GenerateRandomAlpha(6);
 
+
+        private Precondition homePage = new Precondition(Driver);
+        private Contractors adminContraCreate = new Contractors(Driver);
+        private LanguageContractor contrLang = new LanguageContractor(Driver);
+
 //Navigate on Create contractor page
         [Given(@"User logs in as Admin and navigates on Contractors Create page")]
         public void UserNavigatesOnCreateContractorPageTest()
         {
-            Driver.Navigate().GoToUrl("http://intnstest:50080");
-
-            Precondition homePage = new Precondition(Driver);
-            Contractors adminContraCreate = new Contractors(Driver);
             Assert.That(homePage.IsSignInDisplayed(), Is.True, "Sign in page is not displayed.");
-            homePage.UsernameInputField().SendKeys("IQService.admin2");
-            homePage.PasswordInputField().SendKeys("87108884-1cac-4b8d-a80e-692425c5f294");
-            homePage.SignInButton().Click();
+            homePage.LoginAsAdmin();
             Assert.That(homePage.IsAdminsHeaderDisplayed(), Is.True, "Admin's home page is not displayed.");
             adminContraCreate.ContractorsButton().Click();
             adminContraCreate.ContractorsCreateButton().Click();
@@ -74,27 +73,26 @@ namespace FirstProject.Steps.Admin
         [When(@"User doesn't enter values and clicks create button")]
         public void UserDosentEnterValuesAndClicksCreateTest()
         {
-            Contractors adminContractCreate = new Contractors(Driver);
-            adminContractCreate.ContractorsSaveButton().Click();
+            adminContraCreate.ContractorsSaveButton().Click();
+            Assert.AreEqual("http://intnstest:50080/ContractorDatas/Create", Driver.Url);
+
         }
         [Then(@"Error messages under inputs are showed")]
         public void ErrorMessagesAreShowedTest()
         {
-            Contractors adminContractractorsError1 = new Contractors(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage1, adminContractractorsError1.EmptyUsernameField1().Text);
-                Assert.AreEqual(expectedMessage2, adminContractractorsError1.EmptyPCCIdField1().Text);
-                Assert.AreEqual(expectedMessage3, adminContractractorsError1.EmptyFirstnameField1().Text);
-                Assert.AreEqual(expectedMessage4, adminContractractorsError1.EmptyLastnameField1().Text);
+                Assert.AreEqual(expectedMessage1, adminContraCreate.EmptyUsernameField1().Text);
+                Assert.AreEqual(expectedMessage2, adminContraCreate.EmptyPCCIdField1().Text);
+                Assert.AreEqual(expectedMessage3, adminContraCreate.EmptyFirstnameField1().Text);
+                Assert.AreEqual(expectedMessage4, adminContraCreate.EmptyLastnameField1().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS5, adminContractractorsError1.EmptyUsernameField1().Text);
-                Assert.AreEqual(expectedMessageRS6, adminContractractorsError1.EmptyPCCIdField1().Text);
-                Assert.AreEqual(expectedMessageRS7, adminContractractorsError1.EmptyFirstnameField1().Text);
-                Assert.AreEqual(expectedMessageRS8, adminContractractorsError1.EmptyLastnameField1().Text);
+                Assert.AreEqual(expectedMessageRS5, adminContraCreate.EmptyUsernameField1().Text);
+                Assert.AreEqual(expectedMessageRS6, adminContraCreate.EmptyPCCIdField1().Text);
+                Assert.AreEqual(expectedMessageRS7, adminContraCreate.EmptyFirstnameField1().Text);
+                Assert.AreEqual(expectedMessageRS8, adminContraCreate.EmptyLastnameField1().Text);
             }
         }
 
@@ -104,31 +102,30 @@ namespace FirstProject.Steps.Admin
         [When(@"User enters invalid values and clicks create button")]
         public void InvalidValuesCreateContractorTest()
         {
-            Contractors adminContractractorsError2 = new Contractors(Driver);
-            adminContractractorsError2.CreateContractorsInputUsername().SendKeys(invalid_char);
-            adminContractractorsError2.CreateContractorsInputPCCId().SendKeys("-" + random_num);
-            adminContractractorsError2.CreateContractorsValidName().SendKeys(invalid_char);
-            adminContractractorsError2.CreateContractorsValidLastName().SendKeys(invalid_char);
-            adminContractractorsError2.ContractorsSaveButton().Click();
+            adminContraCreate.CreateContractorsInputUsername().SendKeys(invalid_char);
+            adminContraCreate.CreateContractorsInputPCCId().SendKeys("-" + random_num);
+            adminContraCreate.CreateContractorsValidName().SendKeys(invalid_char);
+            adminContraCreate.CreateContractorsValidLastName().SendKeys(invalid_char);
+            adminContraCreate.ContractorsSaveButton().Click();
+            Assert.AreEqual("http://intnstest:50080/ContractorDatas/Create", Driver.Url);
+
         }
         [Then(@"Error messages are showed 2")]
         public void ErrorMessagesAreShowd2Test()
         {
-            Contractors adminContractractorsError3 = new Contractors(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage5, adminContractractorsError3.InvalidUsernameField1().Text);
-                Assert.AreEqual(expectedMessage21, adminContractractorsError3.InvalidPCCIdField1().Text);
-                Assert.AreEqual(expectedMessage6, adminContractractorsError3.EmptyFirstnameField1().Text);
-                Assert.AreEqual(expectedMessage7, adminContractractorsError3.EmptyLastnameField1().Text);
+                Assert.AreEqual(expectedMessage5, adminContraCreate.InvalidUsernameField1().Text);
+                Assert.AreEqual(expectedMessage21, adminContraCreate.InvalidPCCIdField1().Text);
+                Assert.AreEqual(expectedMessage6, adminContraCreate.EmptyFirstnameField1().Text);
+                Assert.AreEqual(expectedMessage7, adminContraCreate.EmptyLastnameField1().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS9, adminContractractorsError3.InvalidUsernameField1().Text);
-                Assert.AreEqual(expectedMessageRS10, adminContractractorsError3.InvalidPCCIdField1().Text);
-                Assert.AreEqual(expectedMessageRS13, adminContractractorsError3.EmptyFirstnameField1().Text);
-                Assert.AreEqual(expectedMessageRS14, adminContractractorsError3.EmptyLastnameField1().Text);
+                Assert.AreEqual(expectedMessageRS9, adminContraCreate.InvalidUsernameField1().Text);
+                Assert.AreEqual(expectedMessageRS10, adminContraCreate.InvalidPCCIdField1().Text);
+                Assert.AreEqual(expectedMessageRS13, adminContraCreate.EmptyFirstnameField1().Text);
+                Assert.AreEqual(expectedMessageRS14, adminContraCreate.EmptyLastnameField1().Text);
             }
         }
 
@@ -137,27 +134,26 @@ namespace FirstProject.Steps.Admin
         [When(@"User enters username and pccid that already exist")]
         public void UserEntersUsernameAndPccidThatAlreadyExistCreateTest()
         {
-            Contractors adminContractractorsError4 = new Contractors(Driver);
-            adminContractractorsError4.CreateContractorsInputUsername().Clear();
-            adminContractractorsError4.CreateContractorsInputUsername().SendKeys("IQService.contractor2");
-            adminContractractorsError4.CreateContractorsInputPCCId().Clear();
-            adminContractractorsError4.CreateContractorsInputPCCId().SendKeys("34243");
-            adminContractractorsError4.ContractorsSaveButton().Click();
+            adminContraCreate.CreateContractorsInputUsername().Clear();
+            adminContraCreate.CreateContractorsInputUsername().SendKeys("IQService.contractor2");
+            adminContraCreate.CreateContractorsInputPCCId().Clear();
+            adminContraCreate.CreateContractorsInputPCCId().SendKeys("34243");
+            adminContraCreate.ContractorsSaveButton().Click();
+            Assert.AreEqual("http://intnstest:50080/ContractorDatas/Create", Driver.Url);
+
         }
         [Then(@"Error messages are showed 3")]
         public void ErrorMessagesAreShowed3Test()
         {
-            Contractors adminContractractorsError5 = new Contractors(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage8, adminContractractorsError5.ExistUsernameField1().Text);
-                Assert.AreEqual(expectedMessage9, adminContractractorsError5.ExistPccIdField1().Text);
+                Assert.AreEqual(expectedMessage8, adminContraCreate.ExistUsernameField1().Text);
+                Assert.AreEqual(expectedMessage9, adminContraCreate.ExistPccIdField1().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS11, adminContractractorsError5.ExistUsernameField1RS().Text);
-                Assert.AreEqual(expectedMessageRS12, adminContractractorsError5.ExistPccIdField1RS().Text);
+                Assert.AreEqual(expectedMessageRS11, adminContraCreate.ExistUsernameField1RS().Text);
+                Assert.AreEqual(expectedMessageRS12, adminContraCreate.ExistPccIdField1RS().Text);
             }
         }
 
@@ -167,57 +163,45 @@ namespace FirstProject.Steps.Admin
         [Given(@"User logs in as Admin and navigates on Contractors Create page 1")]
         public void UserNavigatesOnCreateContractorPageTest1()
         {
-            Driver.Navigate().GoToUrl("http://intnstest:50080");
-
-            Precondition homePage = new Precondition(Driver);
-            Contractors adminContraCreate = new Contractors(Driver);
             Assert.That(homePage.IsSignInDisplayed(), Is.True, "Sign in page is not displayed.");
-            homePage.UsernameInputField().SendKeys("IQService.admin2");
-            homePage.PasswordInputField().SendKeys("87108884-1cac-4b8d-a80e-692425c5f294");
-            homePage.SignInButton().Click();
+            homePage.LoginAsAdmin();
             Assert.That(homePage.IsAdminsHeaderDisplayed(), Is.True, "Admin's home page is not displayed.");
             adminContraCreate.ContractorsButton().Click();
             adminContraCreate.ContractorsCreateButton().Click();
-            Assert.That(adminContraCreate.IsCreateFromListDisplayed(), Is.True, "Create page is not displayed.");
-
+            Assert.That(adminContraCreate.IsCreateFromListDisplayed(), Is.True, "Create contractor page is not displayed.");
         }
 
         [When(@"User enters valid values in create contractors page")]
         public void UserEntersValidValuesInCreateContractorsPageTest()
         {
-            Contractors ValidValuesCreate = new Contractors(Driver);
-            ValidValuesCreate.CreateContractorsInputUsername().Clear();
-            ValidValuesCreate.CreateContractorsInputUsername().SendKeys("Tester." + username);
-            ValidValuesCreate.CreateContractorsInputPCCId().Clear();
-            ValidValuesCreate.CreateContractorsInputPCCId().SendKeys(PCCId);
-            ValidValuesCreate.CreateContractorsValidName().Clear();
-            ValidValuesCreate.CreateContractorsValidName().SendKeys(FirstName);
-            ValidValuesCreate.CreateContractorsValidLastName().Clear();
-            ValidValuesCreate.CreateContractorsValidLastName().SendKeys(LastName);
-            ValidValuesCreate.ContractorsSaveButton().Click();
+            adminContraCreate.CreateContractorsInputUsername().SendKeys("Tester." + username);
+            adminContraCreate.CreateContractorsInputPCCId().SendKeys(PCCId);
+            adminContraCreate.CreateContractorsValidName().SendKeys(FirstName);
+            adminContraCreate.CreateContractorsValidLastName().SendKeys(LastName);
+            adminContraCreate.ContractorsSaveButton().Click();
+            Assert.AreEqual("http://intnstest:50080/ContractorDatas", Driver.Url);
+
         }
         [Then(@"Contractor is successfully created")]
         public void ContractorIsSuccessfullyCreatedTest()
         {
-            Contractors createdContr = new Contractors(Driver);
-            Assert.AreEqual("Tester." + username, createdContr.TableContractors().FindElement(By.XPath("//td[2][contains(string(), '" + "Tester." + username + "')]")).Text);
+            Assert.AreEqual("Tester." + username, adminContraCreate.TableContractors().FindElement(By.XPath("//td[2][contains(string(), '" + "Tester." + username + "')]")).Text);
             Assert.AreEqual(FirstName,
-             createdContr.TableContractors().FindElement(By.XPath("//td[4][contains(string(), '" + FirstName + "')]")).Text);
+             adminContraCreate.TableContractors().FindElement(By.XPath("//td[4][contains(string(), '" + FirstName + "')]")).Text);
             Assert.AreEqual(LastName,
-             createdContr.TableContractors().FindElement(By.XPath("//td[5][contains(string(), '" + LastName + "')]")).Text);
+             adminContraCreate.TableContractors().FindElement(By.XPath("//td[5][contains(string(), '" + LastName + "')]")).Text);
             Assert.AreEqual(PCCId,
-            createdContr.TableContractors().FindElement(By.XPath("//td[6][contains(string(), '" + PCCId + "')]")).Text);
+            adminContraCreate.TableContractors().FindElement(By.XPath("//td[6][contains(string(), '" + PCCId + "')]")).Text);
         }
 
 //Admin clicks on detais link in the table. Details page should be visible.
 
         [When(@"User clicks on Details about contractor and back to list button")]
         public void DetailsAboutContractorAndBackTest()
-        {      
-            Contractors createdContrDetails = new Contractors(Driver);
-            createdContrDetails.TableContractors().FindElement(By.XPath("//tr[contains(string(), '" + "Tester." + username + "')]//td[7]//a[2]")).Click();
-            Assert.That(createdContrDetails.IsDetailsPageDisplayed(), Is.True, "Details about new contractor are not displayed");
-            createdContrDetails.ContractorsDetailsBackButton().Click();
+        {
+            adminContraCreate.TableContractors().FindElement(By.XPath("//tr[contains(string(), '" + "Tester." + username + "')]//td[7]//a[2]")).Click();
+            Assert.That(adminContraCreate.IsDetailsPageDisplayed(), Is.True, "Details about new contractor are not displayed");
+            adminContraCreate.ContractorsDetailsBackButton().Click();
         }
 
 //Admin navigates on edit page and deletes all values and clicks save button. Error messages should be showed under inputs.
@@ -225,31 +209,26 @@ namespace FirstProject.Steps.Admin
         [When(@"User navigates on edit page and deletes values")]
         public void EditContractorsPageDeleteTest()
         {
-            Contractors adminContractractorsError6 = new Contractors(Driver);
-            adminContractractorsError6.TableContractors().FindElement(By.XPath("//tr[contains(string(), '" + "Tester." + username + "')]//td[7]//a[1]")).Click();
-            Assert.That(adminContractractorsError6.IsEditPageDisplayed(), Is.True, "Edit page for new contractor is not displayed");
+            adminContraCreate.TableContractors().FindElement(By.XPath("//tr[contains(string(), '" + "Tester." + username + "')]//td[7]//a[1]")).Click();
+            Assert.That(adminContraCreate.IsEditPageDisplayed(), Is.True, "Edit page for new contractor is not displayed");
 
-            adminContractractorsError6.EditContractorsPccId().Clear();
-            adminContractractorsError6.EditContractorsFirstname().Clear();
-            adminContractractorsError6.EditContractorsLastname().Clear();
-            adminContractractorsError6.EditContractorsSave().Click();
+            adminContraCreate.ClearAllFieldsEdit();
+            adminContraCreate.EditContractorsSave().Click();
         }
         [Then(@"Error messages are showed 4")]
         public void ErrorMessagesAreShowed4Test()
         {
-            Contractors adminContractractorsError7 = new Contractors(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage2, adminContractractorsError7.EmptyPCCIdField1().Text);
-                Assert.AreEqual(expectedMessage3, adminContractractorsError7.EmptyFirstnameField2().Text);
-                Assert.AreEqual(expectedMessage4, adminContractractorsError7.EmptyLastnameField2().Text);
+                Assert.AreEqual(expectedMessage2, adminContraCreate.EmptyPCCIdField1().Text);
+                Assert.AreEqual(expectedMessage3, adminContraCreate.EmptyFirstnameField2().Text);
+                Assert.AreEqual(expectedMessage4, adminContraCreate.EmptyLastnameField2().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS6, adminContractractorsError7.EmptyPCCIdField1().Text);
-                Assert.AreEqual(expectedMessageRS7, adminContractractorsError7.EmptyFirstnameField2().Text);
-                Assert.AreEqual(expectedMessageRS8, adminContractractorsError7.EmptyLastnameField2().Text);
+                Assert.AreEqual(expectedMessageRS6, adminContraCreate.EmptyPCCIdField1().Text);
+                Assert.AreEqual(expectedMessageRS7, adminContraCreate.EmptyFirstnameField2().Text);
+                Assert.AreEqual(expectedMessageRS8, adminContraCreate.EmptyLastnameField2().Text);
 
             }
         }
@@ -260,28 +239,25 @@ namespace FirstProject.Steps.Admin
         [When(@"User enters negativ pcc id and invalid first name and last name")]
         public void UserEntersInvalidPccIdAndFirstAndLastNameTest()
         {
-            Contractors adminContractractorsError8 = new Contractors(Driver);
-            adminContractractorsError8.EditContractorsPccId().SendKeys("-" + random_num);
-            adminContractractorsError8.EditContractorsFirstname().SendKeys(invalid_char);
-            adminContractractorsError8.EditContractorsLastname().SendKeys(invalid_char);
-            adminContractractorsError8.EditContractorsSave().Click();
+            adminContraCreate.EditContractorsPccId().SendKeys("-" + random_num);
+            adminContraCreate.EditContractorsFirstname().SendKeys(invalid_char);
+            adminContraCreate.EditContractorsLastname().SendKeys(invalid_char);
+            adminContraCreate.EditContractorsSave().Click();
         }
         [Then(@"Error messages are showed 5")]
         public void ErrorMessagesAreShowed5Test()
         {
-            Contractors adminContractractorsError9 = new Contractors(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage6, adminContractractorsError9.EmptyFirstnameField2().Text);
-                Assert.AreEqual(expectedMessage7, adminContractractorsError9.EmptyLastnameField2().Text);
-                Assert.AreEqual(expectedMessage21, adminContractractorsError9.InvalidPCCIdField1().Text);
+                Assert.AreEqual(expectedMessage6, adminContraCreate.EmptyFirstnameField2().Text);
+                Assert.AreEqual(expectedMessage7, adminContraCreate.EmptyLastnameField2().Text);
+                Assert.AreEqual(expectedMessage21, adminContraCreate.InvalidPCCIdField1().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS13, adminContractractorsError9.EmptyFirstnameField2().Text);
-                Assert.AreEqual(expectedMessageRS14, adminContractractorsError9.EmptyLastnameField2().Text);
-                Assert.AreEqual(expectedMessageRS10, adminContractractorsError9.InvalidPCCIdField1().Text);
+                Assert.AreEqual(expectedMessageRS13, adminContraCreate.EmptyFirstnameField2().Text);
+                Assert.AreEqual(expectedMessageRS14, adminContraCreate.EmptyLastnameField2().Text);
+                Assert.AreEqual(expectedMessageRS10, adminContraCreate.InvalidPCCIdField1().Text);
             }
         }
 
@@ -290,27 +266,22 @@ namespace FirstProject.Steps.Admin
         [When(@"User enters pccid that already exists")]
         public void UserEnterPccIdThatAlreadyExistsEditTest()
         {
-            Contractors adminContractractorsError10 = new Contractors(Driver);
-            adminContractractorsError10.CreateContractorsInputPCCId().Clear();
-            adminContractractorsError10.CreateContractorsInputPCCId().SendKeys("34243");
-            adminContractractorsError10.EditContractorsFirstname().Clear();
-            adminContractractorsError10.EditContractorsFirstname().SendKeys(FirstName2);
-            adminContractractorsError10.EditContractorsLastname().Clear();
-            adminContractractorsError10.EditContractorsLastname().SendKeys(FirstName2);
-            adminContractractorsError10.EditContractorsSave().Click();
+            adminContraCreate.ClearAllFieldsEdit();
+            adminContraCreate.CreateContractorsInputPCCId().SendKeys("34243");
+            adminContraCreate.EditContractorsFirstname().SendKeys(FirstName2);
+            adminContraCreate.EditContractorsLastname().SendKeys(FirstName2);
+            adminContraCreate.EditContractorsSave().Click();
         }
         [Then(@"Error message is showed")]
         public void ErrorMessageIsShowedTest()
         {
-            Contractors adminContractractorsError11 = new Contractors(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage9, adminContractractorsError11.ExistPccIdField1().Text);
+                Assert.AreEqual(expectedMessage9, adminContraCreate.ExistPccIdField1().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS12, adminContractractorsError11.ExistPccIdField1RS().Text);
+                Assert.AreEqual(expectedMessageRS12, adminContraCreate.ExistPccIdField1RS().Text);
 
             }
         }
@@ -320,27 +291,25 @@ namespace FirstProject.Steps.Admin
         [When(@"Admin change values in contractors edit form and saves them")]
         public void AdminEditContractorTest()
         {
-            Contractors EditContractorsLink2 = new Contractors(Driver);
-            EditContractorsLink2.EditContractorsPccId().Clear();
-            EditContractorsLink2.EditContractorsPccId().SendKeys(PCCId2);
-            EditContractorsLink2.EditContractorsFirstname().Clear();
-            EditContractorsLink2.EditContractorsFirstname().SendKeys(FirstName2);
-            EditContractorsLink2.EditContractorsLastname().Clear();
-            EditContractorsLink2.EditContractorsLastname().SendKeys(LastName2);
-            EditContractorsLink2.EditContractorsSave().Click();
+            adminContraCreate.ClearAllFieldsEdit();
+            adminContraCreate.EditContractorsPccId().SendKeys(PCCId2);
+            adminContraCreate.EditContractorsFirstname().SendKeys(FirstName2);
+            adminContraCreate.EditContractorsLastname().SendKeys(LastName2);
+            adminContraCreate.EditContractorsSave().Click();
+            Assert.AreEqual("http://intnstest:50080/ContractorDatas", Driver.Url);
+
         }
         [Then(@"Edited Contractor is changed in list")]
         public void EditedContractorIsChangedInListTest()
         {
-            Contractors EditContractorsLink3 = new Contractors(Driver);
             Assert.AreEqual("Tester." + username,
-               EditContractorsLink3.TableContractors().FindElement(By.XPath("//td[2][contains(string(), '" + "Tester." + username + "')]")).Text);
+               adminContraCreate.TableContractors().FindElement(By.XPath("//td[2][contains(string(), '" + "Tester." + username + "')]")).Text);
             Assert.AreEqual(FirstName2,
-              EditContractorsLink3.TableContractors().FindElement(By.XPath("//td[4][contains(string(), '" + FirstName2 + "')]")).Text);
+              adminContraCreate.TableContractors().FindElement(By.XPath("//td[4][contains(string(), '" + FirstName2 + "')]")).Text);
             Assert.AreEqual(LastName2,
-             EditContractorsLink3.TableContractors().FindElement(By.XPath("//td[5][contains(string(), '" + LastName2 + "')]")).Text);
+             adminContraCreate.TableContractors().FindElement(By.XPath("//td[5][contains(string(), '" + LastName2 + "')]")).Text);
             Assert.AreEqual(PCCId2,
-            EditContractorsLink3.TableContractors().FindElement(By.XPath("//td[6][contains(string(), '" + PCCId2 + "')]")).Text);
+            adminContraCreate.TableContractors().FindElement(By.XPath("//td[6][contains(string(), '" + PCCId2 + "')]")).Text);
 
         }
 
@@ -350,16 +319,14 @@ namespace FirstProject.Steps.Admin
         [When(@"Admin navigates again in contractors edit page and uncheck active checkbox")]
         public void AdminUncheckActivContractorTest()
         {
-            Contractors EditContractorsLink4 = new Contractors(Driver);
-            EditContractorsLink4.TableContractors().FindElement(By.XPath("//tr[contains(string(), '" + "Tester." + username + "')]//td[7]//a[1]")).Click();
-            EditContractorsLink4.EditContractorsActive().Click();
-            EditContractorsLink4.EditContractorsSave().Click();
+            adminContraCreate.TableContractors().FindElement(By.XPath("//tr[contains(string(), '" + "Tester." + username + "')]//td[7]//a[1]")).Click();
+            adminContraCreate.EditContractorsActive().Click();
+            adminContraCreate.EditContractorsSave().Click();
         }
         [Then(@"Contractor is not visible in table")]
         public void ContractorIsNotVisibleTest()
         {
-            Contractors EditContractorsLink5 = new Contractors(Driver);
-            Assert.IsFalse(EditContractorsLink5.TableContractors().Text.Contains(PCCId2));
+            Assert.IsFalse(adminContraCreate.TableContractors().Text.Contains(PCCId2));
 
         }
 

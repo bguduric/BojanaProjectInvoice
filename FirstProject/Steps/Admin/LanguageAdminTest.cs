@@ -15,42 +15,34 @@ namespace FirstProject.Steps.Admin
     class LanguageAdminTest : BaseSteps
     {
 
+        private Precondition homePage = new Precondition(Driver);
+        private LanguageAdmin AdminhomePage5 = new LanguageAdmin(Driver);
+
 //User logs in as admin and change languages
 
-        [Given(@"User navigates to Invoice Validator Web application 6")]
-        public void GivenUserNavigatesToInvoiceValidatorWebApp()
-        {
-            Driver.Navigate().GoToUrl("http://intnstest:50080");
-        }
-
-        [When(@"User logs in as Admin 6")]
+        [Given(@"User logs in as Admin 6")]
         public void UserLogsInAsAdmin()
         {
-            Precondition homePage = new Precondition(Driver);
             Assert.That(homePage.IsSignInDisplayed(), Is.True, "Sign in page is not displayed.");
-            homePage.UsernameInputField().SendKeys("IQService.admin2");
-            homePage.PasswordInputField().SendKeys("87108884-1cac-4b8d-a80e-692425c5f294");
-            homePage.SignInButton().Click();
+            homePage.LoginAsAdmin();
+
         }
         [When(@"Admin is on home page 6")]
         public void AdminIsOnHomePage()
         {
-            LanguageAdmin AdminhomePage5 = new LanguageAdmin(Driver);
             Assert.That(AdminhomePage5.IsAdminPageDisplayed(), Is.True, "My account page is not displayed.");
         }
         [When(@"User clicks on RS option language is changed")]
         public void AdminClicsOnRsOption()
         {
-            LanguageAdmin changeLanguage = new LanguageAdmin(Driver);
-            changeLanguage.LanguageButton().Click();
-            changeLanguage.RSOption().Click();
+            AdminhomePage5.LanguageButton().Click();
+            AdminhomePage5.RSOption().Click();
         }
         [Then(@"User clicks on EN option and back to english")]
         public void AdminClicksOnEnOption()
         {
-            LanguageAdmin changeLanguageEn = new LanguageAdmin(Driver);
-            changeLanguageEn.LanguageButton().Click();
-            changeLanguageEn.ENOption().Click();
+            AdminhomePage5.LanguageButton().Click();
+            AdminhomePage5.ENOption().Click();
         }
     }
 }

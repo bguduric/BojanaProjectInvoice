@@ -12,7 +12,7 @@ namespace FirstProject.Pages.Admin
     {
         private readonly IWebDriver driver;
 
-        //NAVIGATE TO ACCOUNTING PERIODS LIST PAGE
+//NAVIGATE TO ACCOUNTING PERIODS LIST PAGE
 
         public AccountingPeriods(IWebDriver driver)
         {
@@ -38,11 +38,7 @@ namespace FirstProject.Pages.Admin
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(accPerList));
         }
-        public bool IsAccPeriodListDisplayed()
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-            return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.UrlContains("/AccountingPeriods"));
-        }
+
         //create list link
         public IWebElement CreateLinkAcc()
         {
@@ -50,7 +46,7 @@ namespace FirstProject.Pages.Admin
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(createAccPerLink));
         }
-        public bool IsCreateAccFromListDisplayed()
+        public bool IsCreateAccPeriodDisplayed()
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.UrlContains("/AccountingPeriods/Create"));
@@ -137,7 +133,7 @@ namespace FirstProject.Pages.Admin
         {
             By accPeriodTable = By.XPath("//table[@class='table']");
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-            return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(accPeriodTable));
+            return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(accPeriodTable));
         }
 
         //NOT VALID MESSAGES
@@ -226,6 +222,13 @@ namespace FirstProject.Pages.Admin
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.UrlContains("/AccountingPeriod/Edit"));
+
+        }
+        public void ClearAccPeriodAllFields()
+        {
+            CreateClaimIssueData().Clear();
+            CreateClaimPaymentData().Clear();
+            AccPeriodsCreateYear().Clear();
 
         }
     }

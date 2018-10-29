@@ -81,14 +81,12 @@ namespace FirstProject.Features.SignInAsContractor
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 8
-testRunner.Given("User navigates to Invoice Validator web app 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("User logs in as Contractor", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
-testRunner.When("User logs in as Contractor", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.When("Contractor is on home page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
-testRunner.And("Contractor is on home page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
 testRunner.When("User clicks on RS option language is changed 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 12
+#line 11
 testRunner.Then("User clicks on EN option and back to english 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

@@ -81,14 +81,12 @@ namespace FirstProject.Features.SignInAsAdmin
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 8
-testRunner.Given("User navigates to Invoice Validator web application 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("User logs in as Admin 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
-testRunner.When("User logs in as Admin 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.When("Admin is on home page 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
-testRunner.And("Admin is on home page 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
 testRunner.And("User clicks on Invoice Validator button and select accounting period", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
+#line 11
 testRunner.Then("User clicks on Check request button and downloads request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -99,18 +97,16 @@ testRunner.Then("User clicks on Check request button and downloads request", ((s
         public virtual void ChangeLanguageAdmin()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Language Admin", null, ((string[])(null)));
-#line 14
+#line 13
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
+#line 14
+testRunner.Given("User logs in as Admin 6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 15
-testRunner.Given("User navigates to Invoice Validator Web application 6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.When("Admin is on home page 6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 16
-testRunner.When("User logs in as Admin 6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 17
-testRunner.And("Admin is on home page 6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
 testRunner.When("User clicks on RS option language is changed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 19
+#line 17
 testRunner.Then("User clicks on EN option and back to english", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

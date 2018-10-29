@@ -34,7 +34,7 @@ namespace FirstProject.Steps.Contractor
         string messageRS3 = "Unos broja računa je obavezan.";
         string messageRS4 = "Unos naziva agencije je obavezan.";
         string messageRS5 = "Unos broja telefona je obavezan.";
-        readonly string messageRS6 = "Naziv agencije mora biti alfanumerički.";
+        string messageRS6 = "Naziv agencije mora biti alfanumerički.";
         string messageRS7 = "Naziv banke mora biti alfanumerički.";
         string messageRS8 = "Neispravan format. Unesite broj u formatu: xxx-xxxxxxxxxxxxx-xx.";
         string messageRS9 = "Naziv agencije mora biti alfanumerički.";
@@ -52,22 +52,20 @@ namespace FirstProject.Steps.Contractor
         string new_tax_ident_num = GenerateRandomData.GenerateRandomNumber(5);
         string new_telephone = GenerateRandomData.GenerateRandomNumber(9);
 
-//User logs in as contractor and navigate on profile page.
+        private Precondition homePage = new Precondition(Driver);
+        private ProfileContractor contractorProfile= new ProfileContractor(Driver);
+        private LanguageContractor contrLang = new LanguageContractor(Driver);
+        private Claims contrClaimsCreate = new Claims(Driver);
+
 
         [Given(@"User logs in as contractor and navigates on profile page")]
         public void GivenUserNavigatesToInvoiceValidatorWebApp()
         {
-            Driver.Navigate().GoToUrl("http://intnstest:50080");
-            Precondition homePage = new Precondition(Driver);
             Assert.That(homePage.IsSignInDisplayed(), Is.True, "Sign in page is not displayed.");
-            homePage.UsernameInputField().SendKeys("IQService.contractor2");
-            homePage.PasswordInputField().SendKeys("87108884-1cac-4b8d-a80e-692425c5f294");
-            homePage.SignInButton().Click();
-            ProfileContractor contrHomePage = new ProfileContractor(Driver);
-            Assert.That(contrHomePage.IsContractorPageDisplayed(), Is.True, "My account page is not displayed.");
-            ProfileContractor contrProfileEdit = new ProfileContractor(Driver);
-            contrProfileEdit.ProfileConButton().Click();
-            Assert.That(contrProfileEdit.EditContrPage(), Is.True, "Edit contractor page is not displayed.");
+            homePage.LoginAsContractor();
+            Assert.That(contractorProfile.IsContractorPageDisplayed(), Is.True, "My account page is not displayed.");
+            contractorProfile.ProfileConButton().Click();
+            Assert.That(contractorProfile.EditContrPage(), Is.True, "Edit contractor page is not displayed.");
         }
 
 //Contractor deletes all values and clicks on save button.
@@ -76,35 +74,27 @@ namespace FirstProject.Steps.Contractor
         [When(@"Contractor deletes all values from the fields")]
         public void ContractorDeletesAllValuesFromTheFileds()
         {
-            ProfileContractor contrProfileInvalidEdit = new ProfileContractor(Driver);
-            contrProfileInvalidEdit.ContrAddress().Clear();
-            contrProfileInvalidEdit.ContrBankName().Clear();
-            contrProfileInvalidEdit.ContrAccountNumber().Clear();
-            contrProfileInvalidEdit.ContrAgencyName().Clear();
-            contrProfileInvalidEdit.RegistryCountryNum().Clear();
-            contrProfileInvalidEdit.TaxIdentNum().Clear();
-            contrProfileInvalidEdit.ContrTelephone().Clear();
-            contrProfileInvalidEdit.ContrProfileSaveNum().Click();
+            contractorProfile.ClearAllFieldsProfile();       
+            contractorProfile.ContrProfileSaveNum().Click();
         }
         [Then(@"Error messages are showed under Inputs")]
         public void ErrorMessagesAreShowedUnderInputs()
         {
-            ProfileContractor contrProfileInvalidEdit2 = new ProfileContractor(Driver);
             LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(message1, contrProfileInvalidEdit2.EmptyAddressField().Text);
-                Assert.AreEqual(message2, contrProfileInvalidEdit2.EmptyBankNameField().Text);
-                Assert.AreEqual(message3, contrProfileInvalidEdit2.EmptyAccNumberContrField().Text);
-                Assert.AreEqual(message4, contrProfileInvalidEdit2.EmptyAgencyNameField().Text);
-                Assert.AreEqual(message5, contrProfileInvalidEdit2.EmptyTelephoneField().Text);
+                Assert.AreEqual(message1, contractorProfile.EmptyAddressField().Text);
+                Assert.AreEqual(message2, contractorProfile.EmptyBankNameField().Text);
+                Assert.AreEqual(message3, contractorProfile.EmptyAccNumberContrField().Text);
+                Assert.AreEqual(message4, contractorProfile.EmptyAgencyNameField().Text);
+                Assert.AreEqual(message5, contractorProfile.EmptyTelephoneField().Text);
             }
             else {
-                Assert.AreEqual(messageRS1, contrProfileInvalidEdit2.EmptyAddressField().Text);
-                Assert.AreEqual(messageRS2, contrProfileInvalidEdit2.EmptyBankNameField().Text);
-                Assert.AreEqual(messageRS3, contrProfileInvalidEdit2.EmptyAccNumberContrField().Text);
-                Assert.AreEqual(messageRS4, contrProfileInvalidEdit2.EmptyAgencyNameField().Text);
-                Assert.AreEqual(messageRS5, contrProfileInvalidEdit2.EmptyTelephoneField().Text);
+                Assert.AreEqual(messageRS1, contractorProfile.EmptyAddressField().Text);
+                Assert.AreEqual(messageRS2, contractorProfile.EmptyBankNameField().Text);
+                Assert.AreEqual(messageRS3, contractorProfile.EmptyAccNumberContrField().Text);
+                Assert.AreEqual(messageRS4, contractorProfile.EmptyAgencyNameField().Text);
+                Assert.AreEqual(messageRS5, contractorProfile.EmptyTelephoneField().Text);
             }
         }
 
@@ -114,40 +104,37 @@ namespace FirstProject.Steps.Contractor
         [When(@"Contractor enters Invalid Values in input fields")]
         public void ContractorEntersInvalidValuesInInputFields()
         {
-            ProfileContractor contrProfileInvalidEdit3 = new ProfileContractor(Driver);
-            contrProfileInvalidEdit3.ContrAddress().SendKeys(special_char);
-            contrProfileInvalidEdit3.ContrBankName().SendKeys(special_char);
-            contrProfileInvalidEdit3.ContrAccountNumber().SendKeys(special_char);
-            contrProfileInvalidEdit3.ContrAgencyName().SendKeys(special_char);
-            contrProfileInvalidEdit3.RegistryCountryNum().SendKeys(special_char);
-            contrProfileInvalidEdit3.TaxIdentNum().SendKeys(invalid_alph);
-            contrProfileInvalidEdit3.ContrTelephone().SendKeys(special_char);
-            contrProfileInvalidEdit3.ContrProfileSaveNum().Click();
+            contractorProfile.ContrAddress().SendKeys(special_char);
+            contractorProfile.ContrBankName().SendKeys(special_char);
+            contractorProfile.ContrAccountNumber().SendKeys(special_char);
+            contractorProfile.ContrAgencyName().SendKeys(special_char);
+            contractorProfile.RegistryCountryNum().SendKeys(special_char);
+            contractorProfile.TaxIdentNum().SendKeys(invalid_alph);
+            contractorProfile.ContrTelephone().SendKeys(special_char);
+            contractorProfile.ContrProfileSaveNum().Click();
         }
         [Then(@"Error messages are showed under Inputs 2")]
         public void ErrorMessagesAreShowedUnderInputs2()
         {
-            ProfileContractor contrProfileInvalidEdit4 = new ProfileContractor(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(message6, contrProfileInvalidEdit4.EmptyAddressField().Text);
-                Assert.AreEqual(message7, contrProfileInvalidEdit4.EmptyBankNameField().Text);
-                Assert.AreEqual(message8, contrProfileInvalidEdit4.EmptyAccNumberContrField().Text);
-                Assert.AreEqual(message9, contrProfileInvalidEdit4.EmptyAgencyNameField().Text);
-                Assert.AreEqual(message10, contrProfileInvalidEdit4.EmptyRegistryNumber().Text);
-                Assert.AreEqual(message11, contrProfileInvalidEdit4.EmptyTaxIdentification().Text);
-                Assert.AreEqual(message12, contrProfileInvalidEdit4.EmptyTelephoneField().Text);
+                Assert.AreEqual(message6, contractorProfile.EmptyAddressField().Text);
+                Assert.AreEqual(message7, contractorProfile.EmptyBankNameField().Text);
+                Assert.AreEqual(message8, contractorProfile.EmptyAccNumberContrField().Text);
+                Assert.AreEqual(message9, contractorProfile.EmptyAgencyNameField().Text);
+                Assert.AreEqual(message10, contractorProfile.EmptyRegistryNumber().Text);
+                Assert.AreEqual(message11, contractorProfile.EmptyTaxIdentification().Text);
+                Assert.AreEqual(message12, contractorProfile.EmptyTelephoneField().Text);
             }
             else
             {
-                Assert.AreEqual(message6, contrProfileInvalidEdit4.EmptyAddressField().Text);
-                Assert.AreEqual(messageRS7, contrProfileInvalidEdit4.EmptyBankNameField().Text);
-                Assert.AreEqual(messageRS8, contrProfileInvalidEdit4.EmptyAccNumberContrField().Text);
-                Assert.AreEqual(messageRS9, contrProfileInvalidEdit4.EmptyAgencyNameField().Text);
-                Assert.AreEqual(messageRS10, contrProfileInvalidEdit4.EmptyRegistryNumber().Text);
-                Assert.AreEqual(messageRS11, contrProfileInvalidEdit4.EmptyTaxIdentification().Text);
-                Assert.AreEqual(messageRS12, contrProfileInvalidEdit4.EmptyTelephoneField().Text);
+                Assert.AreEqual(message6, contractorProfile.EmptyAddressField().Text);
+                Assert.AreEqual(messageRS7, contractorProfile.EmptyBankNameField().Text);
+                Assert.AreEqual(messageRS8, contractorProfile.EmptyAccNumberContrField().Text);
+                Assert.AreEqual(messageRS9, contractorProfile.EmptyAgencyNameField().Text);
+                Assert.AreEqual(messageRS10, contractorProfile.EmptyRegistryNumber().Text);
+                Assert.AreEqual(messageRS11, contractorProfile.EmptyTaxIdentification().Text);
+                Assert.AreEqual(messageRS12, contractorProfile.EmptyTelephoneField().Text);
             }
         }
 
@@ -157,63 +144,49 @@ namespace FirstProject.Steps.Contractor
         public void GivenUserNavigatesToInvoiceValidatorWebApp2()
         {
             Driver.Navigate().GoToUrl("http://intnstest:50080");
-            Precondition homePage = new Precondition(Driver);
             Assert.That(homePage.IsSignInDisplayed(), Is.True, "Sign in page is not displayed.");
             homePage.UsernameInputField().SendKeys("IQService.contractor2");
             homePage.PasswordInputField().SendKeys("87108884-1cac-4b8d-a80e-692425c5f294");
             homePage.SignInButton().Click();
-            ProfileContractor contrHomePage = new ProfileContractor(Driver);
-            Assert.That(contrHomePage.IsContractorPageDisplayed(), Is.True, "My account page is not displayed.");
-            ProfileContractor contrProfileEdit = new ProfileContractor(Driver);
-            contrProfileEdit.ProfileConButton().Click();
-            Assert.That(contrProfileEdit.EditContrPage(), Is.True, "Edit contractor page is not displayed.");
+            Assert.That(contractorProfile.IsContractorPageDisplayed(), Is.True, "My account page is not displayed.");
+            contractorProfile.ProfileConButton().Click();
+            Assert.That(contractorProfile.EditContrPage(), Is.True, "Edit contractor page is not displayed.");
         }
 
         [When(@"Contractor enters new valid values and clicks the save button")]
         public void ContractorEntersNewValidValues()
         {
-            ProfileContractor contrProfileEdit2 = new ProfileContractor(Driver);
-            contrProfileEdit2.ContrAddress().Clear();
-            contrProfileEdit2.ContrAddress().SendKeys(new_address);
-            contrProfileEdit2.ContrBankName().Clear();
-            contrProfileEdit2.ContrBankName().SendKeys(new_bankname);
-            contrProfileEdit2.ContrAccountNumber().Clear();
-            contrProfileEdit2.ContrAccountNumber().SendKeys(new_number);
-            contrProfileEdit2.ContrAgencyName().Clear();
-            contrProfileEdit2.ContrAgencyName().SendKeys(new_agency_name);
-            contrProfileEdit2.RegistryCountryNum().Clear();
-            contrProfileEdit2.RegistryCountryNum().SendKeys(new_registry_country);
-            contrProfileEdit2.TaxIdentNum().Clear();
-            contrProfileEdit2.TaxIdentNum().SendKeys(new_tax_ident_num);
-            contrProfileEdit2.ContrTelephone().Clear();
-            contrProfileEdit2.ContrTelephone().SendKeys(new_telephone);
-            contrProfileEdit2.ContrProfileSaveNum().Click();
+            contractorProfile.ClearAllFieldsProfile();
+            contractorProfile.ContrAddress().SendKeys(new_address);
+            contractorProfile.ContrBankName().SendKeys(new_bankname);
+            contractorProfile.ContrAccountNumber().SendKeys(new_number);
+            contractorProfile.ContrAgencyName().SendKeys(new_agency_name);
+            contractorProfile.RegistryCountryNum().SendKeys(new_registry_country);
+            contractorProfile.TaxIdentNum().SendKeys(new_tax_ident_num);
+            contractorProfile.ContrTelephone().SendKeys(new_telephone);
+            contractorProfile.ContrProfileSaveNum().Click();
         }
         [Then(@"Contractor is redirected on create claim page")]
         public void ContractorIsRedirectedOnCreateClaimPage()
         {
-            ProfileContractor contrProfileEdit3 = new ProfileContractor(Driver);
-            Assert.That(contrProfileEdit3.IsCreatePageDisplayed(), Is.True, "Edit contractor page is not displayed.");
-            Claims contrClaimsCreate = new Claims(Driver);
+            Assert.That(contractorProfile.IsCreatePageDisplayed(), Is.True, "Edit contractor page is not displayed.");
             contrClaimsCreate.ConAccNumberToPay().Equals(new_number);
         }
         [When(@"Contractor navigate again on Profile page")]
         public void ContractorNavigateAgainOnprofilePage()
         {
-            ProfileContractor contrProfileEdit4 = new ProfileContractor(Driver);
-            contrProfileEdit4.ProfileConButton().Click();
+            contractorProfile.ProfileConButton().Click();
         }
         [Then(@"New values are in input fields")]
         public void NewValuesAreInInputFields()
         {
-            ProfileContractor contrProfileEdit5 = new ProfileContractor(Driver);
-            Assert.AreEqual(new_address, contrProfileEdit5.ContrAddress().GetAttribute("value"));
-            Assert.AreEqual(new_bankname, contrProfileEdit5.ContrBankName().GetAttribute("value"));
-            Assert.AreEqual(new_number, contrProfileEdit5.ContrAccountNumber().GetAttribute("value"));
-            Assert.AreEqual(new_agency_name, contrProfileEdit5.ContrAgencyName().GetAttribute("value"));
-            Assert.AreEqual(new_registry_country, contrProfileEdit5.RegistryCountryNum().GetAttribute("value"));
-            Assert.AreEqual(new_tax_ident_num, contrProfileEdit5.TaxIdentNum().GetAttribute("value"));
-            Assert.AreEqual(new_telephone, contrProfileEdit5.ContrTelephone().GetAttribute("value"));
+            Assert.AreEqual(new_address, contractorProfile.ContrAddress().GetAttribute("value"));
+            Assert.AreEqual(new_bankname, contractorProfile.ContrBankName().GetAttribute("value"));
+            Assert.AreEqual(new_number, contractorProfile.ContrAccountNumber().GetAttribute("value"));
+            Assert.AreEqual(new_agency_name, contractorProfile.ContrAgencyName().GetAttribute("value"));
+            Assert.AreEqual(new_registry_country, contractorProfile.RegistryCountryNum().GetAttribute("value"));
+            Assert.AreEqual(new_tax_ident_num, contractorProfile.TaxIdentNum().GetAttribute("value"));
+            Assert.AreEqual(new_telephone, contractorProfile.ContrTelephone().GetAttribute("value"));
 
         }
 

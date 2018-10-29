@@ -38,10 +38,10 @@ namespace FirstProject.Pages.Admin
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(claimCatList));
         }
-        public bool IsClaimCatListDisplayed()
+        public bool IsCreateClaimListDisplayed()
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-            return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.UrlContains("/ClaimCategories/Create"));
+            return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.UrlContains("/ClaimCategories"));
         }
 
         //create from list link

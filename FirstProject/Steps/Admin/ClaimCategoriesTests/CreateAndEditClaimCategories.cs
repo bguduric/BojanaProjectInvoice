@@ -29,62 +29,56 @@ namespace FirstProject.Steps.Admin.ClaimCategoriesTests
         string valid_name = GenerateRandomData.GenerateRandomAlpha(7);
         string valid_name2 = GenerateRandomData.GenerateRandomAlpha(7);
 
-//User logs in as admin and navigate on create claim category
+        private Precondition homePage = new Precondition(Driver);
+        private ClaimCategories AdminClaimCategory = new ClaimCategories(Driver);
+        private LanguageContractor contrLang = new LanguageContractor(Driver);
+
+        //User logs in as admin and navigate on create claim category
 
         [Given(@"User logs in as admin and navigates on Claim category page 3")]
         public void GivenUserNavigatesToInvoiceValidatorWebApp()
         {
-            Driver.Navigate().GoToUrl("http://intnstest:50080");
-            Precondition homePage = new Precondition(Driver);
-
             Assert.That(homePage.IsSignInDisplayed(), Is.True, "Sign in page is not displayed.");
-            homePage.UsernameInputField().SendKeys("IQService.admin2");
-            homePage.PasswordInputField().SendKeys("87108884-1cac-4b8d-a80e-692425c5f294");
-            homePage.SignInButton().Click();
-
-            ClaimCategories AdminhomePage3 = new ClaimCategories(Driver);
-            Assert.That(AdminhomePage3.IsAdminPageDisplayed(), Is.True, "My account page is not displayed.");
-            AdminhomePage3.ClaimCategoriesButton().Click();
-            AdminhomePage3.ClaimCategoriesCreateButton().Click();
-            Assert.That(AdminhomePage3.IsClaimCatListDisplayed(), Is.True, "Claim category is not displayed.");
+            homePage.LoginAsAdmin();
+            Assert.That(AdminClaimCategory.IsAdminPageDisplayed(), Is.True, "My account page is not displayed.");
+            AdminClaimCategory.ClaimCategoriesButton().Click();
+            AdminClaimCategory.ClaimCategoriesCreateButton().Click();
+            Assert.That(AdminClaimCategory.IsCreateClaimFromListDisplayed(), Is.True, "Claim categories list is not displayed.");
         }
         [When(@"User enters valid values in create claim category form 2")]
         public void UserEntersValidValiesInCreateClaimCategoty()
         {
-            ClaimCategories adminClaimCategoryCreate = new ClaimCategories(Driver);
-            adminClaimCategoryCreate.ClaimCategoryCreateName().Clear();
-            adminClaimCategoryCreate.ClaimCategoryCreateName().SendKeys(valid_name);
-            adminClaimCategoryCreate.ClaimCategoryPositive().Click();
-            adminClaimCategoryCreate.ClaimCategoryCreateButton().Click();
+            AdminClaimCategory.ClaimCategoryCreateName().Clear();
+            AdminClaimCategory.ClaimCategoryCreateName().SendKeys(valid_name);
+            AdminClaimCategory.ClaimCategoryPositive().Click();
+            AdminClaimCategory.ClaimCategoryCreateButton().Click();
+
         }
         [Then(@"User is redirected on claim categories list 3")]
         public void UserIsRedirectedOnClaimCatListWithNewClaim()
         {
-            ClaimCategories adminClaimCategoryList2 = new ClaimCategories(Driver);
-            Assert.AreEqual(valid_name, adminClaimCategoryList2.TableClaimCategories().FindElement(By.XPath("//td[1][contains(string(), '" + valid_name + "')]")).Text);
+            Assert.AreEqual("http://intnstest:50080/ClaimCategories", Driver.Url);
+            Assert.AreEqual(valid_name, AdminClaimCategory.TableClaimCategories().FindElement(By.XPath("//td[1][contains(string(), '" + valid_name + "')]")).Text);
         }
 //Admin deltes claim category name and clicks on save button. Error message should be showed.
 
         [When(@"User navigates on edit link and deletes Claim category name and clicks on save button")]
         public void UserDelatesClaimCategoryNameAndClicksOnSaveButton()
         {
-            ClaimCategories InvalidClaimCategoriesEdit = new ClaimCategories(Driver);
-            InvalidClaimCategoriesEdit.TableClaimCategories().FindElement(By.XPath("//tr[contains(string(), '" + valid_name + "')]//td[3]//a[1]")).Click();
-            InvalidClaimCategoriesEdit.ClaimCategoryCreateName().Clear();
-            InvalidClaimCategoriesEdit.ClaimCategoryEditSaveButton().Click();
+            AdminClaimCategory.TableClaimCategories().FindElement(By.XPath("//tr[contains(string(), '" + valid_name + "')]//td[3]//a[1]")).Click();
+            AdminClaimCategory.ClaimCategoryCreateName().Clear();
+            AdminClaimCategory.ClaimCategoryEditSaveButton().Click();
         }
         [Then(@"Error message is showed 8")]
         public void ErrorMessageIsShowed8()
         {
-            ClaimCategories InvalidClaimCategoriesEdit2 = new ClaimCategories(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage18, InvalidClaimCategoriesEdit2.EmptyClaimCategory().Text);
+                Assert.AreEqual(expectedMessage18, AdminClaimCategory.EmptyClaimCategory().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS22, InvalidClaimCategoriesEdit2.EmptyClaimCategory().Text);
+                Assert.AreEqual(expectedMessageRS22, AdminClaimCategory.EmptyClaimCategory().Text);
             }
         }
 
@@ -94,22 +88,19 @@ namespace FirstProject.Steps.Admin.ClaimCategoriesTests
         [When(@"User enters invalid values in Claim category edit name")]
         public void UserEntersInvalidValuesInClaimCategoryEditName()
         {
-            ClaimCategories InvalidClaimCategoriesEdit3 = new ClaimCategories(Driver);
-            InvalidClaimCategoriesEdit3.ClaimCategoryCreateName().SendKeys(invalid_claim);
-            InvalidClaimCategoriesEdit3.ClaimCategoryEditSaveButton().Click();
+            AdminClaimCategory.ClaimCategoryCreateName().SendKeys(invalid_claim);
+            AdminClaimCategory.ClaimCategoryEditSaveButton().Click();
         }
         [Then(@"Error message is showed 9")]
         public void ErrorMessageIsShowed9()
         {
-            ClaimCategories InvalidClaimCategoriesEdit4 = new ClaimCategories(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage20, InvalidClaimCategoriesEdit4.EmptyClaimCategory().Text);
+                Assert.AreEqual(expectedMessage20, AdminClaimCategory.EmptyClaimCategory().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS23, InvalidClaimCategoriesEdit4.EmptyClaimCategory().Text);
+                Assert.AreEqual(expectedMessageRS23, AdminClaimCategory.EmptyClaimCategory().Text);
             }
         }
 
@@ -118,49 +109,45 @@ namespace FirstProject.Steps.Admin.ClaimCategoriesTests
         [When(@"User changes name in name that already exists in edit claim category")]
         public void UserChangesNameInNameThatAlreadyExistsInEditClaimCategory()
         {
-            ClaimCategories InvalidClaimCategoriesEdit5 = new ClaimCategories(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                InvalidClaimCategoriesEdit5.ClaimCategoryCreateName().Clear();
-                InvalidClaimCategoriesEdit5.ClaimCategoryCreateName().SendKeys("Monthly Claim");
-                InvalidClaimCategoriesEdit5.ClaimCategoryEditSaveButton().Click();
+                AdminClaimCategory.ClaimCategoryCreateName().Clear();
+                AdminClaimCategory.ClaimCategoryCreateName().SendKeys("Monthly Claim");
+                AdminClaimCategory.ClaimCategoryEditSaveButton().Click();
             }
             else
             {
-                InvalidClaimCategoriesEdit5.ClaimCategoryCreateName().Clear();
-                InvalidClaimCategoriesEdit5.ClaimCategoryCreateName().SendKeys("DJBcmbi");
-                InvalidClaimCategoriesEdit5.ClaimCategoryEditSaveButton().Click();
+                AdminClaimCategory.ClaimCategoryCreateName().Clear();
+                AdminClaimCategory.ClaimCategoryCreateName().SendKeys("DJBcmbi");
+                AdminClaimCategory.ClaimCategoryEditSaveButton().Click();
             }
         }
         [Then(@"Error message is showed 10")]
         public void ErrorMessageIsShowed10()
         {
-            ClaimCategories InvalidClaimCategoriesEdit6 = new ClaimCategories(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage19, InvalidClaimCategoriesEdit6.ExistsClaimCategory().Text);
+                Assert.AreEqual(expectedMessage19, AdminClaimCategory.ExistsClaimCategory().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS24, InvalidClaimCategoriesEdit6.ExistsClaimCategoryRS().Text);
+                Assert.AreEqual(expectedMessageRS24, AdminClaimCategory.ExistsClaimCategoryRS().Text);
 
             }
         }
         [When(@"Admin enters valid values and change the name od claim category")]
         public void AdminEditClaimCategory()
         {
-            ClaimCategories editClaimCategoryValid = new ClaimCategories(Driver);
-            editClaimCategoryValid.ClaimCategoryCreateName().Clear();
-            editClaimCategoryValid.ClaimCategoryCreateName().SendKeys(valid_name2);
-            editClaimCategoryValid.ClaimCategoryEditSaveButton().Click();
+            AdminClaimCategory.ClaimCategoryCreateName().Clear();
+            AdminClaimCategory.ClaimCategoryCreateName().SendKeys(valid_name2);
+            AdminClaimCategory.ClaimCategoryEditSaveButton().Click();
+            Assert.AreEqual("http://intnstest:50080/ClaimCategories", Driver.Url);
+
         }
         [Then(@"Claim category is successfully changed")]
         public void ClaimCategoryIsSuccessfullyChanged()
         {
-            ClaimCategories editClaimCategoryValid2 = new ClaimCategories(Driver);
-            Assert.AreEqual(valid_name2, editClaimCategoryValid2.TableClaimCategories().FindElement(By.XPath("//td[1][contains(string(), '" + valid_name2 + "')]")).Text);
+            Assert.AreEqual(valid_name2, AdminClaimCategory.TableClaimCategories().FindElement(By.XPath("//td[1][contains(string(), '" + valid_name2 + "')]")).Text);
         }
 
 //Admin wants to delete changed claim. Deleted claim shouldn't be in the list.
@@ -168,10 +155,10 @@ namespace FirstProject.Steps.Admin.ClaimCategoriesTests
         [When(@"Admin clicks on delete link and clicks on delete button")]
         public void AdminClicksOnDeleteLinkAndClicksOnDeleteButton()
         {
-            ClaimCategories editClaimCategoryValid3 = new ClaimCategories(Driver);
-            editClaimCategoryValid3.TableClaimCategories().FindElement(By.XPath("//tr[contains(string(), '" + valid_name + "')]//td[3]//a[2]")).Click();
-            editClaimCategoryValid3.ClaimCategoryDeleteButton().Click();
-            Assert.IsFalse(editClaimCategoryValid3.TableClaimCategories().Text.Contains(valid_name));
+            AdminClaimCategory.TableClaimCategories().FindElement(By.XPath("//tr[contains(string(), '" + valid_name + "')]//td[3]//a[2]")).Click();
+            AdminClaimCategory.ClaimCategoryDeleteButton().Click();
+            Assert.AreEqual("http://intnstest:50080/ClaimCategories", Driver.Url);
+            Assert.IsFalse(AdminClaimCategory.TableClaimCategories().Text.Contains(valid_name));
         }
     }
 }

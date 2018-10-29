@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,6 +64,17 @@ namespace FirstProject.Pages
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(logout_as_admin));
         }
-       
+        public void LoginAsAdmin()
+        {
+            UsernameInputField().SendKeys(ConfigurationManager.AppSettings["usernameAdmin"]);
+            PasswordInputField().SendKeys(ConfigurationManager.AppSettings["password"]);
+            SignInButton().Click();
+        }
+        public void LoginAsContractor()
+        {
+            UsernameInputField().SendKeys(ConfigurationManager.AppSettings["usernameContractor"]);
+            PasswordInputField().SendKeys(ConfigurationManager.AppSettings["password"]);
+            SignInButton().Click();
+        }
     }
 }

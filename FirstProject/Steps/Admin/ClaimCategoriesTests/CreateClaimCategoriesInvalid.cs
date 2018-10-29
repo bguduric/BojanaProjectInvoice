@@ -30,24 +30,20 @@ namespace FirstProject.Steps.Admin.ClaimCategoriesTests
         string valid_name = GenerateRandomData.GenerateRandomAlpha(7);
         string valid_name2 = GenerateRandomData.GenerateRandomAlpha(7);
 
-//User logs in as admin and navigate on create claim category
+        private Precondition homePage = new Precondition(Driver);
+        private ClaimCategories AdminhomePage = new ClaimCategories(Driver);
+        private LanguageContractor contrLang = new LanguageContractor(Driver);
+
+        //User logs in as admin and navigate on create claim category
 
         [Given(@"User logs in as admin and navigates on Claim category page 1")]
         public void GivenUserNavigatesToInvoiceValidatorWebApp()
         {
-            Driver.Navigate().GoToUrl("http://intnstest:50080");
-            Precondition homePage = new Precondition(Driver);
-
             Assert.That(homePage.IsSignInDisplayed(), Is.True, "Sign in page is not displayed.");
-            homePage.UsernameInputField().SendKeys("IQService.admin2");
-            homePage.PasswordInputField().SendKeys("87108884-1cac-4b8d-a80e-692425c5f294");
-            homePage.SignInButton().Click();
-
-            ClaimCategories AdminhomePage3 = new ClaimCategories(Driver);
-            Assert.That(AdminhomePage3.IsAdminPageDisplayed(), Is.True, "My account page is not displayed.");
-            AdminhomePage3.ClaimCategoriesButton().Click();
-            AdminhomePage3.ClaimCategoriesCreateButton().Click();
-            Assert.That(AdminhomePage3.IsClaimCatListDisplayed(), Is.True, "Claim category is not displayed.");
+            homePage.LoginAsAdmin();
+            Assert.That(AdminhomePage.IsAdminPageDisplayed(), Is.True, "My account page is not displayed.");
+            AdminhomePage.ClaimCategoriesButton().Click();
+            AdminhomePage.ClaimCategoriesCreateButton().Click();
         }
 
 //Admin clear name field and clicks on create button. Error message under input should show
@@ -55,21 +51,18 @@ namespace FirstProject.Steps.Admin.ClaimCategoriesTests
         [When(@"User doesn't enter anything and clicks on create claim category button")]
         public void UserDoesntEnterAnythingAndClicksCreateClaimCategoryButton()
         {
-            ClaimCategories InvalidClaimCategoriesCreate2 = new ClaimCategories(Driver);
-            InvalidClaimCategoriesCreate2.ClaimCategoryCreateButton().Click();
+            AdminhomePage.ClaimCategoryCreateButton().Click();
         }
         [Then(@"Error message is showed 5")]
         public void ErrorMessageIsShowed5()
         {
-            ClaimCategories InvalidClaimCategoriesCreate3 = new ClaimCategories(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage18, InvalidClaimCategoriesCreate3.EmptyClaimCategory().Text);
+                Assert.AreEqual(expectedMessage18, AdminhomePage.EmptyClaimCategory().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS22, InvalidClaimCategoriesCreate3.EmptyClaimCategory().Text);
+                Assert.AreEqual(expectedMessageRS22, AdminhomePage.EmptyClaimCategory().Text);
             }
         }
 
@@ -78,22 +71,19 @@ namespace FirstProject.Steps.Admin.ClaimCategoriesTests
         [When(@"User enters invalid values in Claim categories name field")]
         public void UserEntersInvalidValuesInClaimCategoriesNameField()
         {
-            ClaimCategories InvalidClaimCategoriesCreate4 = new ClaimCategories(Driver);
-            InvalidClaimCategoriesCreate4.ClaimCategoryCreateName().SendKeys(invalid_claim);
-            InvalidClaimCategoriesCreate4.ClaimCategoryCreateButton().Click();
+            AdminhomePage.ClaimCategoryCreateName().SendKeys(invalid_claim);
+            AdminhomePage.ClaimCategoryCreateButton().Click();
         }
         [Then(@"Error message is showed 6")]
         public void ErrorMessageIsShowed6()
         {
-            ClaimCategories InvalidClaimCategoriesCreate5 = new ClaimCategories(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage20, InvalidClaimCategoriesCreate5.EmptyClaimCategory().Text);
+                Assert.AreEqual(expectedMessage20, AdminhomePage.EmptyClaimCategory().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS23, InvalidClaimCategoriesCreate5.EmptyClaimCategory().Text);
+                Assert.AreEqual(expectedMessageRS23, AdminhomePage.EmptyClaimCategory().Text);
             }
         }
 
@@ -102,34 +92,30 @@ namespace FirstProject.Steps.Admin.ClaimCategoriesTests
         [When(@"User enters claim category name")]
         public void UserEntersClaimCategoryName()
         {
-            ClaimCategories InvalidClaimCategoriesCreate6 = new ClaimCategories(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                InvalidClaimCategoriesCreate6.ClaimCategoryCreateName().Clear();
-                InvalidClaimCategoriesCreate6.ClaimCategoryCreateName().SendKeys("Monthly Claim");
-                InvalidClaimCategoriesCreate6.ClaimCategoryCreateButton().Click();
+                AdminhomePage.ClaimCategoryCreateName().Clear();
+                AdminhomePage.ClaimCategoryCreateName().SendKeys("Monthly Claim");
+                AdminhomePage.ClaimCategoryCreateButton().Click();
             }
             else
             {
-                InvalidClaimCategoriesCreate6.ClaimCategoryCreateName().Clear();
-                InvalidClaimCategoriesCreate6.ClaimCategoryCreateName().SendKeys("DJBcmbi");
-                InvalidClaimCategoriesCreate6.ClaimCategoryEditSaveButton().Click();
+                AdminhomePage.ClaimCategoryCreateName().Clear();
+                AdminhomePage.ClaimCategoryCreateName().SendKeys("DJBcmbi");
+                AdminhomePage.ClaimCategoryEditSaveButton().Click();
                 
             }
         }
         [Then(@"Error message is showed 7")]
         public void ErrorMessageIsShowed7()
         {
-            ClaimCategories InvalidClaimCategoriesCreate7 = new ClaimCategories(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage19, InvalidClaimCategoriesCreate7.ExistsClaimCategory().Text);
+                Assert.AreEqual(expectedMessage19, AdminhomePage.ExistsClaimCategory().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS24, InvalidClaimCategoriesCreate7.ExistsClaimCategory2RS().Text);
+                Assert.AreEqual(expectedMessageRS24, AdminhomePage.ExistsClaimCategory2RS().Text);
             }
         }
     }

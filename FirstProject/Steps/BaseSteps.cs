@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,11 @@ namespace FirstProject.Steps
             {
                 Driver = new ChromeDriver();
                 Driver.Manage().Window.Maximize();
-            }
+            Driver.Url = ConfigurationManager.AppSettings["URL"];
 
-            [AfterScenario]
+        }
+
+        [AfterScenario]
             public static void AfterScenario()
             {
                 Driver.Quit();

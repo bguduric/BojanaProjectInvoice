@@ -32,52 +32,47 @@ namespace FirstProject.Steps.Contractor.ClaimsTests
         string monthly_claim = GenerateRandomData.GenerateRandomNumberNoZero(1) + GenerateRandomData.GenerateRandomNumber(4);
         string bicycle = GenerateRandomData.GenerateRandomNumberNoZero(1) + GenerateRandomData.GenerateRandomNumber(4);
 
+        private Precondition homePage = new Precondition(Driver);
+        private Claims ContrClaims = new Claims(Driver);
+        private LanguageContractor contrLang = new LanguageContractor(Driver);
 
-//User logs in as a contractor and navigate on create claim page
+        //User logs in as a contractor and navigate on create claim page
 
         [Given(@"User logs in as contractor and  deletes values from accounting number to pay input and clicks on create button")]
         public void GivenUserNavigatesToInvoiceValidatorWebApp()
         {
-            Driver.Navigate().GoToUrl("http://intnstest:50080");
-            Precondition homePage = new Precondition(Driver);
-            Claims contrHomePage = new Claims(Driver);
             Assert.That(homePage.IsSignInDisplayed(), Is.True, "Sign in page is not displayed.");
-            homePage.UsernameInputField().SendKeys("IQService.contractor2");
-            homePage.PasswordInputField().SendKeys("87108884-1cac-4b8d-a80e-692425c5f294");
-            homePage.SignInButton().Click();
-            Assert.That(contrHomePage.IsCreatePageDisplayed(), Is.True, "Home page is not displayed.");
-            contrHomePage.ConAccNumberToPay().Clear();
-            contrHomePage.CreateClaimButtonContr().Click();
+            homePage.LoginAsContractor();
+            Assert.That(ContrClaims.IsCreatePageDisplayed(), Is.True, "Home page is not displayed.");
+            ContrClaims.ConAccNumberToPay().Clear();
+            ContrClaims.CreateClaimButtonContr().Click();
         }
         [When(@"Contractor select accounting period and enter valid values")]
         public void ContractorSelectAccPeriodAndEnterValidValues()
         {
-            Claims createClaim1 = new Claims(Driver);
-            createClaim1.RandomContAccountingPeriod();
-            createClaim1.ConAccNumberToPay().Clear();
-            createClaim1.ConAccNumberToPay().SendKeys(acc_num_claim);
-            createClaim1.MonthlyClaimContr().Clear();
-            createClaim1.MonthlyClaimContr().SendKeys(monthly_claim);
-            createClaim1.UniquaContr().Clear();
-            createClaim1.UniquaContr().SendKeys(uniqua);
-            createClaim1.BicycleContr().Clear();
-            createClaim1.BicycleContr().SendKeys(bicycle);
+            ContrClaims.RandomContAccountingPeriod();
+            ContrClaims.ConAccNumberToPay().Clear();
+            ContrClaims.ConAccNumberToPay().SendKeys(acc_num_claim);
+            ContrClaims.MonthlyClaimContr().Clear();
+            ContrClaims.MonthlyClaimContr().SendKeys(monthly_claim);
+            ContrClaims.UniquaContr().Clear();
+            ContrClaims.UniquaContr().SendKeys(uniqua);
+            ContrClaims.BicycleContr().Clear();
+            ContrClaims.BicycleContr().SendKeys(bicycle);
 
-            createClaim1.CreateClaimButtonContr().Click();
+            ContrClaims.CreateClaimButtonContr().Click();
         }
         [Then(@"Contractor is redirected to Claim list and new claim is visible in the table 1")]
         public void ContractorIsRedirectedToClaimListAndNewClaimIsVisibleInTheTable()
         {
-            Claims createClaim2 = new Claims(Driver);
-            Assert.That(createClaim2.IsListOfClaimsDisplayed(), Is.True, "List with claims is not displayed.");
-            Assert.AreEqual(acc_num_claim, createClaim2.TableClaims().FindElement(By.XPath("//td[4][contains(string(), '" + acc_num_claim + "')]")).Text);
+            Assert.AreEqual("http://intnstest:50080/Claims/ContractorClaimsIndex", Driver.Url);
+            Assert.AreEqual(acc_num_claim, ContrClaims.TableClaims().FindElement(By.XPath("//td[4][contains(string(), '" + acc_num_claim + "')]")).Text);
         }
 
         [When(@"Contractor clicks on Edit link for new Claim")]
         public void ContractorNavigatesToClaimListAndClicksOnEditLink()
         {
-            Claims nav_to_list = new Claims(Driver);
-            nav_to_list.TableClaims().FindElement(By.XPath("//tr[contains(string(), '" + acc_num_claim + "')]//td[6]//a[1]")).Click();
+            ContrClaims.TableClaims().FindElement(By.XPath("//tr[contains(string(), '" + acc_num_claim + "')]//td[6]//a[1]")).Click();
 
         }
 
@@ -87,22 +82,19 @@ namespace FirstProject.Steps.Contractor.ClaimsTests
         [When(@"Contractor deletes values from accounting number to pay input and clicks on save button")]
         public void ContractorDeletesValuesFromAccNumberToPay1()
         {
-            Claims InvalidClaimEdit = new Claims(Driver);
-            InvalidClaimEdit.ConAccNumberToPay().Clear();
-            InvalidClaimEdit.EditClaimSaveButton().Click();
+            ContrClaims.ConAccNumberToPay().Clear();
+            ContrClaims.EditClaimSaveButton().Click();
         }
         [Then(@"Error message under Account number input is showed")]
         public void ErrorMessageUnderAccNumInputIsShowed()
         {
-            Claims InvalidClaimEdit = new Claims(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(message15, InvalidClaimEdit.emptyCreateClaimAccNumberToPay().Text);
+                Assert.AreEqual(message15, ContrClaims.emptyCreateClaimAccNumberToPay().Text);
             }
             else
             {
-                Assert.AreEqual(messageRS13, InvalidClaimEdit.emptyCreateClaimAccNumberToPay().Text);
+                Assert.AreEqual(messageRS13, ContrClaims.emptyCreateClaimAccNumberToPay().Text);
             }
         }
 
@@ -112,56 +104,52 @@ namespace FirstProject.Steps.Contractor.ClaimsTests
         [When(@"Contractor enters invalid values in Edit page form")]
         public void ContractorEntersInvalidValuesInEditPageForm()
         {
-            Claims InvalidClaimEdit1 = new Claims(Driver);
-            InvalidClaimEdit1.ConAccNumberToPay().SendKeys(invalid_values);
-            InvalidClaimEdit1.MonthlyClaimContr().Clear();
-            InvalidClaimEdit1.MonthlyClaimContr().SendKeys("0" + number);
-            InvalidClaimEdit1.BicycleContr().Clear();
-            InvalidClaimEdit1.BicycleContr().SendKeys("0" + number);
-            InvalidClaimEdit1.UniquaContr().Clear();
-            InvalidClaimEdit1.UniquaContr().SendKeys("0" + number);
-            InvalidClaimEdit1.EditClaimSaveButton().Click();
+            ContrClaims.ConAccNumberToPay().SendKeys(invalid_values);
+            ContrClaims.MonthlyClaimContr().Clear();
+            ContrClaims.MonthlyClaimContr().SendKeys("0" + number);
+            ContrClaims.BicycleContr().Clear();
+            ContrClaims.BicycleContr().SendKeys("0" + number);
+            ContrClaims.UniquaContr().Clear();
+            ContrClaims.UniquaContr().SendKeys("0" + number);
+            ContrClaims.EditClaimSaveButton().Click();
         }
         [Then(@"Message about error under Account number input is showed")]
         public void MessageAboutErrorUnderAccNumberInputIsShowed()
         {
-            Claims InvalidClaimEdit2 = new Claims(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(message16, InvalidClaimEdit2.emptyCreateClaimAccNumberToPay().Text);
-                Assert.AreEqual(message17, InvalidClaimEdit2.UniqueError().Text);
-                Assert.AreEqual(message17, InvalidClaimEdit2.MonthlyClaimError().Text);
-                Assert.AreEqual(message17, InvalidClaimEdit2.BicycleError().Text);
+                Assert.AreEqual(message16, ContrClaims.emptyCreateClaimAccNumberToPay().Text);
+                Assert.AreEqual(message17, ContrClaims.UniqueError().Text);
+                Assert.AreEqual(message17, ContrClaims.MonthlyClaimError().Text);
+                Assert.AreEqual(message17, ContrClaims.BicycleError().Text);
             }
             else
             {
-                Assert.AreEqual(messageRS14, InvalidClaimEdit2.emptyCreateClaimAccNumberToPay().Text);
-                Assert.AreEqual(messageRS15, InvalidClaimEdit2.UniqueError().Text);
-                Assert.AreEqual(messageRS15, InvalidClaimEdit2.MonthlyClaimError().Text);
-                Assert.AreEqual(messageRS15, InvalidClaimEdit2.BicycleError().Text);
+                Assert.AreEqual(messageRS14, ContrClaims.emptyCreateClaimAccNumberToPay().Text);
+                Assert.AreEqual(messageRS15, ContrClaims.UniqueError().Text);
+                Assert.AreEqual(messageRS15, ContrClaims.MonthlyClaimError().Text);
+                Assert.AreEqual(messageRS15, ContrClaims.BicycleError().Text);
             }
         }
 
         [When(@"Contractor enter valid values and clicks save button")]
         public void ContractorEnterValidValuesAndClicksSaveButton()
         {
-            Claims claimValidEdit1 = new Claims(Driver);
-            claimValidEdit1.ConAccNumberToPay().Clear();
-            claimValidEdit1.ConAccNumberToPay().SendKeys(acc_num_claim2);
-            claimValidEdit1.MonthlyClaimContr().Clear();
-            claimValidEdit1.MonthlyClaimContr().SendKeys(monthly_claim);
-            claimValidEdit1.UniquaContr().Clear();
-            claimValidEdit1.UniquaContr().SendKeys(uniqua);
-            claimValidEdit1.BicycleContr().Clear();
-            claimValidEdit1.BicycleContr().SendKeys(bicycle);
-            claimValidEdit1.EditClaimSaveButton().Click();
+            ContrClaims.ConAccNumberToPay().Clear();
+            ContrClaims.ConAccNumberToPay().SendKeys(acc_num_claim2);
+            ContrClaims.MonthlyClaimContr().Clear();
+            ContrClaims.MonthlyClaimContr().SendKeys(monthly_claim);
+            ContrClaims.UniquaContr().Clear();
+            ContrClaims.UniquaContr().SendKeys(uniqua);
+            ContrClaims.BicycleContr().Clear();
+            ContrClaims.BicycleContr().SendKeys(bicycle);
+            ContrClaims.EditClaimSaveButton().Click();
         }
         [Then(@"Contractor is successfully edited and visible in table")]
         public void ContractorIsSuccessfullyEditedAndVisibleInTable()
         {
-            Claims claimValidEdit1 = new Claims(Driver);
-            Assert.AreEqual(acc_num_claim2, claimValidEdit1.TableClaims().FindElement(By.XPath("//td[4][contains(string(), '" + acc_num_claim2 + "')]")).Text);
+            Assert.AreEqual("http://intnstest:50080/Claims/ContractorClaimsIndex", Driver.Url);
+            Assert.AreEqual(acc_num_claim2, ContrClaims.TableClaims().FindElement(By.XPath("//td[4][contains(string(), '" + acc_num_claim2 + "')]")).Text);
         }
 
 //Contractor navigates on details link and back to the list link
@@ -169,9 +157,8 @@ namespace FirstProject.Steps.Contractor.ClaimsTests
         [When(@"Contractor clicks on Detalis link")]
         public void ContractorClicksOnDetailsLink()
         {
-            Claims claimValidEdit1 = new Claims(Driver);
-            claimValidEdit1.TableClaims().FindElement(By.XPath("//tr[contains(string(), '" + acc_num_claim2 + "')]//td[6]//a[2]")).Click();
-            Assert.That(claimValidEdit1.IsDetailsClaimsDisplayed(), Is.True, "Details page is not displayed.");
+            ContrClaims.TableClaims().FindElement(By.XPath("//tr[contains(string(), '" + acc_num_claim2 + "')]//td[6]//a[2]")).Click();
+            Assert.That(ContrClaims.IsDetailsClaimsDisplayed(), Is.True, "Details page is not displayed.");
         }
     }
 }

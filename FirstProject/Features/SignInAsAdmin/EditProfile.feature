@@ -6,9 +6,8 @@ my profile
 
 @mytag
 Scenario: Edit Profile Invalid Values
-Given User navigates to Invoice Validator web application 14
-When User logs in as Admin 14
-And Admin is on home page 14
+Given User logs in as Admin 14
+When Admin is on home page 14
 When Admin navigates on Profile page and delete First name and Last name
 Then Error messages are showed 10
 When User enters invalid values in edit profile page

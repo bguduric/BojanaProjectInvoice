@@ -81,18 +81,16 @@ namespace FirstProject.Features.SignInAsAdmin
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 9
-testRunner.Given("User navigates to Invoice Validator web application 14", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("User logs in as Admin 14", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
-testRunner.When("User logs in as Admin 14", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.When("Admin is on home page 14", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
-testRunner.And("Admin is on home page 14", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
 testRunner.When("Admin navigates on Profile page and delete First name and Last name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 13
+#line 12
 testRunner.Then("Error messages are showed 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 14
+#line 13
 testRunner.When("User enters invalid values in edit profile page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 15
+#line 14
 testRunner.Then("Error messages are showed 11", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -103,16 +101,16 @@ testRunner.Then("Error messages are showed 11", ((string)(null)), ((TechTalk.Spe
         public virtual void EditProfileValidValues()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit Profile Valid Values", null, ((string[])(null)));
-#line 17
+#line 16
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 18
+#line 17
 testRunner.Given("User Logs in as admin and navigate on Profile page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 19
+#line 18
 testRunner.When("User changes name and last name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 20
+#line 19
 testRunner.Then("User\'s changes are saved and he is redirected in Home page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 21
+#line 20
 testRunner.When("User navigates on profile Page and clicks on back button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();

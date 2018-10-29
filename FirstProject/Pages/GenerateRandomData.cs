@@ -11,7 +11,7 @@ namespace FirstProject.Pages
     class GenerateRandomData
 
     {
-        private readonly IWebDriver driver;
+        //private readonly IWebDriver driver;
 
         public static string GenerateRandomNumber(int lenght)
         {

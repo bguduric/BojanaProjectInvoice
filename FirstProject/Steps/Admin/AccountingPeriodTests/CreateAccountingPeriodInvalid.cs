@@ -36,22 +36,20 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
         string year2 = GenerateRandomData.GenerateRandomYear().ToString();
         string invalid_form = GenerateRandomData.GenerateRandomSpecChar(2);
 
+        private Precondition homePage = new Precondition(Driver);
+        private AccountingPeriods AdminAccountingPeriods = new AccountingPeriods(Driver);
+        private LanguageContractor contrLang = new LanguageContractor(Driver);
+
+//TEST
 
         [Given(@"User logs in as admin and navigate on Accouting period create page 1")]
         public void GivenUserNavigatesToInvoiceValidatorWebApp()
         {
-            Driver.Navigate().GoToUrl("http://intnstest:50080");
-
-            Precondition homePage = new Precondition(Driver);
-            AccountingPeriods AdminhomePage = new AccountingPeriods(Driver);
-
             Assert.That(homePage.IsSignInDisplayed(), Is.True, "Sign in page is not displayed.");
-            homePage.UsernameInputField().SendKeys("IQService.admin2");
-            homePage.PasswordInputField().SendKeys("87108884-1cac-4b8d-a80e-692425c5f294");
-            homePage.SignInButton().Click();
-            AdminhomePage.AccPeriodsButton().Click();
-            AdminhomePage.AccPeriodsCreateButton().Click();
-            Assert.That(AdminhomePage.IsCreateAccFromListDisplayed(), Is.True, "Create accounting period is not displayed.");
+            homePage.LoginAsAdmin();
+            AdminAccountingPeriods.AccPeriodsButton().Click();
+            AdminAccountingPeriods.AccPeriodsCreateButton().Click();
+            Assert.That(AdminAccountingPeriods.IsCreateAccPeriodDisplayed(), Is.True, "Create accounting period is not displayed.");
         }
 
 //Admin clear all fields and click on create button. Error messeges under required inputs should be showed.
@@ -59,26 +57,25 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
         [When(@"Admin clears Year input and click create button")]
         public void ClearYearInputAndClickCreateButton()
         {
-            AccountingPeriods CreateInvalidAccPeriod2 = new AccountingPeriods(Driver);
-            CreateInvalidAccPeriod2.AccPeriodsCreateYear().Clear();
-            CreateInvalidAccPeriod2.CreateAccButton().Click();
+            AdminAccountingPeriods.AccPeriodsCreateYear().Clear();
+            AdminAccountingPeriods.CreateAccButton().Click();
+            Assert.AreEqual("http://intnstest:50080/AccountingPeriods/Create", Driver.Url);
+
         }
         [Then(@"Error messages are showed 6")]
         public void ErrorMessagesAreShowed6()
         {
-            AccountingPeriods CreateInvalidAccPeriod3 = new AccountingPeriods(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage10, CreateInvalidAccPeriod3.EmptyCreateYear().Text);
-                Assert.AreEqual(expectedMessage11, CreateInvalidAccPeriod3.EmptyCreateClaimIssue().Text);
-                Assert.AreEqual(expectedMessage12, CreateInvalidAccPeriod3.EmptyCreateClaimPayment().Text);
+                Assert.AreEqual(expectedMessage10, AdminAccountingPeriods.EmptyCreateYear().Text);
+                Assert.AreEqual(expectedMessage11, AdminAccountingPeriods.EmptyCreateClaimIssue().Text);
+                Assert.AreEqual(expectedMessage12, AdminAccountingPeriods.EmptyCreateClaimPayment().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS20, CreateInvalidAccPeriod3.EmptyCreateYear().Text);
-                Assert.AreEqual(expectedMessageRS15, CreateInvalidAccPeriod3.EmptyCreateClaimIssue().Text);
-                Assert.AreEqual(expectedMessageRS16, CreateInvalidAccPeriod3.EmptyCreateClaimPayment().Text);
+                Assert.AreEqual(expectedMessageRS20, AdminAccountingPeriods.EmptyCreateYear().Text);
+                Assert.AreEqual(expectedMessageRS15, AdminAccountingPeriods.EmptyCreateClaimIssue().Text);
+                Assert.AreEqual(expectedMessageRS16, AdminAccountingPeriods.EmptyCreateClaimPayment().Text);
 
             }
         }
@@ -89,22 +86,21 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
         [When(@"Admin enters year that is less than 1990.")]
         public void UserEntersInvalidCYear()
         {
-            AccountingPeriods CreateInvalidAccPeriod4 = new AccountingPeriods(Driver);
-            CreateInvalidAccPeriod4.AccPeriodsCreateYear().SendKeys("1989");
-            CreateInvalidAccPeriod4.CreateAccButton().Click();
+            AdminAccountingPeriods.AccPeriodsCreateYear().SendKeys("1989");
+            AdminAccountingPeriods.CreateAccButton().Click();
+            Assert.AreEqual("http://intnstest:50080/AccountingPeriods/Create", Driver.Url);
+
         }
         [Then(@"Error messages are showed 7")]
         public void ErrorMessagesAreShowed7()
         {
-            AccountingPeriods CreateInvalidAccPeriod5 = new AccountingPeriods(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage13, CreateInvalidAccPeriod5.EmptyCreateYear().Text);
+                Assert.AreEqual(expectedMessage13, AdminAccountingPeriods.EmptyCreateYear().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS19, CreateInvalidAccPeriod5.EmptyCreateYear().Text);
+                Assert.AreEqual(expectedMessageRS19, AdminAccountingPeriods.EmptyCreateYear().Text);
 
             }
 
@@ -112,23 +108,22 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
         [When(@"Admin enters year that is greater than 2100.")]
         public void AdminEntersYearThatIsGreaterThan2100()
         {
-            AccountingPeriods CreateInvalidAccPeriod5 = new AccountingPeriods(Driver);
-            CreateInvalidAccPeriod5.AccPeriodsCreateYear().Clear();
-            CreateInvalidAccPeriod5.AccPeriodsCreateYear().SendKeys("2101");
+            AdminAccountingPeriods.AccPeriodsCreateYear().Clear();
+            AdminAccountingPeriods.AccPeriodsCreateYear().SendKeys("2101");
+            AdminAccountingPeriods.CreateAccButton().Click();
+            Assert.AreEqual("http://intnstest:50080/AccountingPeriods/Create", Driver.Url);
+
         }
         [Then(@"Error messages are showed 13")]
         public void ErrorMessagesAreShowed13()
         {
-            AccountingPeriods CreateInvalidAccPeriod5 = new AccountingPeriods(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage13, CreateInvalidAccPeriod5.EmptyCreateYear().Text);
+                Assert.AreEqual(expectedMessage13, AdminAccountingPeriods.EmptyCreateYear().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS19, CreateInvalidAccPeriod5.EmptyCreateYear().Text);
-
+                Assert.AreEqual(expectedMessageRS19, AdminAccountingPeriods.EmptyCreateYear().Text);
             }
         }
 
@@ -138,59 +133,51 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
         [When(@"Admin enters valid year and invalid special characters in claims inputs")]
         public void UserEntersInvalidClaimDateValues()
         {
-            AccountingPeriods CreateInvalidAccPeriod6 = new AccountingPeriods(Driver);
-            CreateInvalidAccPeriod6.CreateClaimIssueData().Clear();
-            CreateInvalidAccPeriod6.CreateClaimIssueData().SendKeys(invalid_form + '.' + invalid_form + '.' + invalid_form + invalid_form);
-            CreateInvalidAccPeriod6.CreateClaimPaymentData().Clear();
-            CreateInvalidAccPeriod6.CreateClaimPaymentData().SendKeys(invalid_form + '.' + invalid_form + '.' + invalid_form + invalid_form);
-            CreateInvalidAccPeriod6.AccPeriodsCreateYear().Clear();
-            CreateInvalidAccPeriod6.AccPeriodsCreateYear().SendKeys(year);
-            CreateInvalidAccPeriod6.ClickOnPage().Click();
-            CreateInvalidAccPeriod6.CreateAccButton().Click();
+            AdminAccountingPeriods.ClearAccPeriodAllFields();
+            AdminAccountingPeriods.CreateClaimIssueData().SendKeys(invalid_form + '.' + invalid_form + '.' + invalid_form + invalid_form);
+            AdminAccountingPeriods.CreateClaimPaymentData().SendKeys(invalid_form + '.' + invalid_form + '.' + invalid_form + invalid_form);
+            AdminAccountingPeriods.AccPeriodsCreateYear().SendKeys(year);
+            AdminAccountingPeriods.ClickOnPage().Click();
+            AdminAccountingPeriods.CreateAccButton().Click();
+            Assert.AreEqual("http://intnstest:50080/AccountingPeriods/Create", Driver.Url);
         }
         [Then(@"Error messages are showed 8")]
         public void ErrorMessagesAreShowed8()
         {
-            AccountingPeriods CreateInvalidAccPeriod7 = new AccountingPeriods(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage15, CreateInvalidAccPeriod7.InvalidCreateClaimIssue().Text);
-                Assert.AreEqual(expectedMessage16, CreateInvalidAccPeriod7.InvalidCreateClaimPayment().Text);
+                Assert.AreEqual(expectedMessage15, AdminAccountingPeriods.InvalidCreateClaimIssue().Text);
+                Assert.AreEqual(expectedMessage16, AdminAccountingPeriods.InvalidCreateClaimPayment().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS17, CreateInvalidAccPeriod7.InvalidCreateClaimIssueRS().Text);
-                Assert.AreEqual(expectedMessageRS18, CreateInvalidAccPeriod7.InvalidCreateClaimPaymentRS().Text);
+                Assert.AreEqual(expectedMessageRS17, AdminAccountingPeriods.InvalidCreateClaimIssueRS().Text);
+                Assert.AreEqual(expectedMessageRS18, AdminAccountingPeriods.InvalidCreateClaimPaymentRS().Text);
             }
         }
         [When(@"Admin enters valid year and invalid formats in claims inputs")]
         public void AdminEntersValidYearAndInvalidFormatsInClaimsInputs()
         {
-            AccountingPeriods CreateInvalidAccPeriod7 = new AccountingPeriods(Driver);
-            CreateInvalidAccPeriod7.CreateClaimIssueData().Clear();
-            CreateInvalidAccPeriod7.CreateClaimIssueData().SendKeys("123/123/123");
-            CreateInvalidAccPeriod7.CreateClaimPaymentData().Clear();
-            CreateInvalidAccPeriod7.CreateClaimPaymentData().SendKeys("123/123/123");
-            CreateInvalidAccPeriod7.AccPeriodsCreateYear().Clear();
-            CreateInvalidAccPeriod7.AccPeriodsCreateYear().SendKeys(year);
-            CreateInvalidAccPeriod7.ClickOnPage().Click();
-            CreateInvalidAccPeriod7.CreateAccButton().Click();
+            AdminAccountingPeriods.ClearAccPeriodAllFields();
+            AdminAccountingPeriods.CreateClaimIssueData().SendKeys("123/123/123");
+            AdminAccountingPeriods.CreateClaimPaymentData().SendKeys("123/123/123");
+            AdminAccountingPeriods.AccPeriodsCreateYear().SendKeys(year);
+            AdminAccountingPeriods.ClickOnPage().Click();
+            AdminAccountingPeriods.CreateAccButton().Click();
+            Assert.AreEqual("http://intnstest:50080/AccountingPeriods/Create", Driver.Url);
         }
         [Then(@"Error messages are showed 12")]
         public void ErrorMessagesAreShowed12()
         {
-            AccountingPeriods CreateInvalidAccPeriod7 = new AccountingPeriods(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage15, CreateInvalidAccPeriod7.InvalidCreateClaimIssue().Text);
-                Assert.AreEqual(expectedMessage16, CreateInvalidAccPeriod7.InvalidCreateClaimPayment().Text);
+                Assert.AreEqual(expectedMessage15, AdminAccountingPeriods.InvalidCreateClaimIssue().Text);
+                Assert.AreEqual(expectedMessage16, AdminAccountingPeriods.InvalidCreateClaimPayment().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS17, CreateInvalidAccPeriod7.InvalidCreateClaimIssueRS().Text);
-                Assert.AreEqual(expectedMessageRS18, CreateInvalidAccPeriod7.InvalidCreateClaimPaymentRS().Text);
+                Assert.AreEqual(expectedMessageRS17, AdminAccountingPeriods.InvalidCreateClaimIssueRS().Text);
+                Assert.AreEqual(expectedMessageRS18, AdminAccountingPeriods.InvalidCreateClaimPaymentRS().Text);
             }
         }
 
@@ -200,31 +187,27 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
         [When(@"User select month and enters year for accounting period that already exists")]
         public void AccountingPeriodAlreadyExists()
         {
-            AccountingPeriods CreateInvalidAccPeriod8 = new AccountingPeriods(Driver);
-            SelectElement monthSelect = new SelectElement(CreateInvalidAccPeriod8.MonthSel());
+            SelectElement monthSelect = new SelectElement(AdminAccountingPeriods.MonthSel());
             monthSelect.SelectByValue("12");
-            //CreateInvalidAccPeriod8.MonthSel().SendKeys(month_select);
-            CreateInvalidAccPeriod8.CreateClaimIssueData().Clear();
-            CreateInvalidAccPeriod8.CreateClaimIssueData().SendKeys("1.2.2018");
-            CreateInvalidAccPeriod8.CreateClaimPaymentData().Clear();
-            CreateInvalidAccPeriod8.CreateClaimPaymentData().SendKeys("2.3.2018.");
-            CreateInvalidAccPeriod8.AccPeriodsCreateYear().Clear();
-            CreateInvalidAccPeriod8.AccPeriodsCreateYear().SendKeys("2100");
-            CreateInvalidAccPeriod8.ClickOnPage().Click();
-            CreateInvalidAccPeriod8.CreateAccButton().Click();
+            //AdminAccountingPeriods.MonthSel().SendKeys(month_select);
+            AdminAccountingPeriods.ClearAccPeriodAllFields();
+            AdminAccountingPeriods.CreateClaimIssueData().SendKeys("1.2.2018");
+            AdminAccountingPeriods.CreateClaimPaymentData().SendKeys("2.3.2018.");
+            AdminAccountingPeriods.AccPeriodsCreateYear().SendKeys("2100");
+            AdminAccountingPeriods.ClickOnPage().Click();
+            AdminAccountingPeriods.CreateAccButton().Click();
+            Assert.AreEqual("http://intnstest:50080/AccountingPeriods/Create", Driver.Url);
         }
         [Then(@"Error message is showed 2")]
         public void ErrorMessage2()
         {
-            AccountingPeriods CreateInvalidAccPeriod9 = new AccountingPeriods(Driver);
-            LanguageContractor contrLang = new LanguageContractor(Driver);
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-                Assert.AreEqual(expectedMessage17, CreateInvalidAccPeriod9.AlreadyExistsAccPeriod().Text);
+                Assert.AreEqual(expectedMessage17, AdminAccountingPeriods.AlreadyExistsAccPeriod().Text);
             }
             else
             {
-                Assert.AreEqual(expectedMessageRS21, CreateInvalidAccPeriod9.AlreadyExistsAccPeriod2RS().Text);
+                Assert.AreEqual(expectedMessageRS21, AdminAccountingPeriods.AlreadyExistsAccPeriod2RS().Text);
 
             }
         }
