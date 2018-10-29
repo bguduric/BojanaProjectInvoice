@@ -128,7 +128,7 @@ namespace FirstProject.Steps.Contractor
             }
             else
             {
-                Assert.AreEqual(message6, contractorProfile.EmptyAddressField().Text);
+                Assert.AreEqual(messageRS6, contractorProfile.EmptyAddressField().Text);
                 Assert.AreEqual(messageRS7, contractorProfile.EmptyBankNameField().Text);
                 Assert.AreEqual(messageRS8, contractorProfile.EmptyAccNumberContrField().Text);
                 Assert.AreEqual(messageRS9, contractorProfile.EmptyAgencyNameField().Text);
