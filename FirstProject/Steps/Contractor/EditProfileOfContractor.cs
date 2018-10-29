@@ -187,7 +187,6 @@ namespace FirstProject.Steps.Contractor
             Assert.AreEqual(new_registry_country, contractorProfile.RegistryCountryNum().GetAttribute("value"));
             Assert.AreEqual(new_tax_ident_num, contractorProfile.TaxIdentNum().GetAttribute("value"));
             Assert.AreEqual(new_telephone, contractorProfile.ContrTelephone().GetAttribute("value"));
-
         }
 
     }

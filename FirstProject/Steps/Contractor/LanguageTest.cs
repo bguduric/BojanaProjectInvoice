@@ -32,12 +32,16 @@ namespace FirstProject.Steps.Contractor
         {
             contrHomePage.LanguageConButton().Click();
             contrHomePage.RSOptionCon().Click();
+            Assert.That(contrHomePage.LanguageDropDown().Text.Contains("RS"), Is.True, "Application is on English Language.");
+
         }
         [Then(@"User clicks on EN option and back to english 2")]
         public void AdminClicksOnEnOption()
         {
             contrHomePage.LanguageConButton().Click();
             contrHomePage.ENOptionCon().Click();
+            Assert.That(contrHomePage.LanguageDropDown().Text.Contains("EN"), Is.True, "Application is on Serbian Language.");
+
         }
     }
 }

@@ -51,6 +51,11 @@ namespace FirstProject.Pages.Admin
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.UrlContains("/AccountingPeriods/Create"));
         }
+        public bool IsAccountingPeriodListPageDisplayed()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+            return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.UrlContains("/AccountingPeriods"));
+        }
         public IWebElement BackToAcconutingLink()
         {
             By backContractorLink = By.XPath("//div[@class='container body-content']//a");

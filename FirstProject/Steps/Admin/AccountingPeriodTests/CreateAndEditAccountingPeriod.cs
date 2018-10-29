@@ -89,7 +89,6 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
                 //AccountingPeriodsPage.ActiveCheckbox().Click();
                 AccountingPeriodsPage.CreateAccButton().Click();
                 Assert.AreEqual("http://intnstest:50080/AccountingPeriods", Driver.Url);
-
                 Assert.AreEqual(month_select_rs + " " + year, AccountingPeriodsPage.TableAccPeriod().FindElement(By.XPath("//td[1][contains(string(), '" + month_select_rs + " " + year + "')]")).Text);
             }
         
@@ -288,7 +287,6 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
                 AccountingPeriodsPage.EditAccPeriodSave().Click();
                 Assert.AreEqual("http://intnstest:50080/AccountingPeriods", Driver.Url);
             }
-
         }
         [Then(@"Accounting period is changed")]
         public void AccPeriodIsChanged()
@@ -306,7 +304,6 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
                 Assert.AreEqual(year2, AccountingPeriodsPage.AccPeriodsCreateYear().GetAttribute("value"));
                 Assert.AreEqual("1." + AccountingPeriodsPage.MonthSel().GetAttribute("value") + "." + year2 + ".", AccountingPeriodsPage.CreateClaimIssueData().GetAttribute("value"));
                 Assert.AreEqual("28." + AccountingPeriodsPage.MonthSel().GetAttribute("value") + "." + year2 +".", AccountingPeriodsPage.CreateClaimPaymentData().GetAttribute("value"));
-
             }
         }
     }

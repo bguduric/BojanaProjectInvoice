@@ -1,5 +1,6 @@
 ﻿using FirstProject.Pages;
 using FirstProject.Pages.Admin;
+using FirstProject.Pages.Contractor;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
@@ -17,8 +18,9 @@ namespace FirstProject.Steps.Admin
 
         private Precondition homePage = new Precondition(Driver);
         private LanguageAdmin AdminhomePage5 = new LanguageAdmin(Driver);
+        private LanguageContractor contrLang = new LanguageContractor(Driver);
 
-//User logs in as admin and change languages
+        //User logs in as admin and change languages
 
         [Given(@"User logs in as Admin 6")]
         public void UserLogsInAsAdmin()
@@ -37,12 +39,15 @@ namespace FirstProject.Steps.Admin
         {
             AdminhomePage5.LanguageButton().Click();
             AdminhomePage5.RSOption().Click();
+            Assert.That(contrLang.LanguageDropDown().Text.Contains("RS"), Is.True, "Application is on English Language.");
         }
         [Then(@"User clicks on EN option and back to english")]
         public void AdminClicksOnEnOption()
         {
             AdminhomePage5.LanguageButton().Click();
             AdminhomePage5.ENOption().Click();
+            Assert.That(contrLang.LanguageDropDown().Text.Contains("EN"), Is.True, "Application is on Serbian Language.");
+
         }
     }
 }

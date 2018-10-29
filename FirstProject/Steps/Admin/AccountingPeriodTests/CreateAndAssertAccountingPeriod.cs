@@ -53,7 +53,6 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
                      
             if (contrLang.LanguageDropDown().Text.Contains("EN"))
             {
-
                 AdminAccountingPeriods.MonthSel().SendKeys(month_select);
                 AdminAccountingPeriods.ClearAccPeriodAllFields();
                 AdminAccountingPeriods.CreateClaimIssueData().SendKeys(AdminAccountingPeriods.MonthSel().GetAttribute("value") + "/1/" + year);
@@ -63,7 +62,7 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
                 //AdminAccountingPeriods.ActiveCheckbox().Click();
                 AdminAccountingPeriods.CreateAccButton().Click();
                 Assert.AreEqual("http://intnstest:50080/AccountingPeriods", Driver.Url);
-
+           
             }
             else
             {
@@ -76,7 +75,6 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
                 //AdminAccountingPeriods.ActiveCheckbox().Click();
                 AdminAccountingPeriods.CreateAccButton().Click();
                 Assert.AreEqual("http://intnstest:50080/AccountingPeriods", Driver.Url);
-
             }
         }
 
@@ -93,7 +91,6 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
             else
             {
                 Assert.AreEqual(month_select_rs + " " + year, AdminAccountingPeriods.TableAccPeriod().FindElement(By.XPath("//td[1][contains(string(), '" + month_select_rs + " " + year + "')]")).Text);
-                InvoiceValidator selectAccPerInvoice = new InvoiceValidator(Driver);
                 selectAccPerInvoice.InvoiceButton().Click();
                 SelectElement acc_period_created = new SelectElement(selectAccPerInvoice.AccountingPeriodSel());
                 acc_period_created.SelectByText(month_select_rs + " " + year);
