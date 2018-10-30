@@ -12,6 +12,8 @@ using TechTalk.SpecFlow;
 
 namespace FirstProject.Steps.Admin.AccountingPeriodTests
 {
+    [Binding]
+
     class CreateAccountingPeriodInvalid : BaseSteps
     {
         string expectedMessage10 = "Input for year is required.";
@@ -29,7 +31,7 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
         string expectedMessageRS19 = "Unos za godinu mora biti između 1990 i 2100.";
         string expectedMessageRS20 = "Unos godine je obavezan.";
         string expectedMessageRS21 = "Izabrani obračunski period period već postoji.";
-   
+
         string month_select = GenerateRandomData.GenerateMonths();
         string month_select2 = GenerateRandomData.GenerateMonths();
         string year = GenerateRandomData.GenerateRandomYear().ToString();
@@ -40,7 +42,7 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
         private AccountingPeriods AdminAccountingPeriods = new AccountingPeriods(Driver);
         private LanguageContractor contrLang = new LanguageContractor(Driver);
 
-//TEST
+        //TEST
 
         [Given(@"User logs in as admin and navigate on Accouting period create page 1")]
         public void GivenUserNavigatesToInvoiceValidatorWebApp()
@@ -52,9 +54,10 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
             Assert.That(AdminAccountingPeriods.IsCreateAccPeriodDisplayed(), Is.True, "Create accounting period is not displayed.");
         }
 
-//Admin clear all fields and click on create button. Error messeges under required inputs should be showed.
+//Admin clear all fields and click on create button.Error messeges under required inputs should be showed.
 
-        [When(@"Admin clears Year input and click create button")]
+
+       [When(@"Admin clears Year input and click create button")]
         public void ClearYearInputAndClickCreateButton()
         {
             AdminAccountingPeriods.AccPeriodsCreateYear().Clear();
@@ -86,6 +89,7 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
         [When(@"Admin enters year that is less than 1990.")]
         public void UserEntersInvalidCYear()
         {
+            AdminAccountingPeriods.AccPeriodsCreateYear().Clear();
             AdminAccountingPeriods.AccPeriodsCreateYear().SendKeys("1989");
             AdminAccountingPeriods.CreateAccButton().Click();
             Assert.AreEqual("http://intnstest:50080/AccountingPeriods/Create", Driver.Url);
@@ -182,7 +186,7 @@ namespace FirstProject.Steps.Admin.AccountingPeriodTests
         }
 
 
-//If user choose accounting period that already exist, error message should show
+        //If user choose accounting period that already exist, error message should show
 
         [When(@"User select month and enters year for accounting period that already exists")]
         public void AccountingPeriodAlreadyExists()

@@ -261,5 +261,17 @@ namespace FirstProject.Pages.Admin
             EditContractorsFirstname().Clear();
             EditContractorsLastname().Clear();
         }
+        public void FillAllContractorFieldsEdit(string PCCId, string FirstName, string LastName)
+        {
+            EditContractorsPccId().SendKeys(PCCId);
+            EditContractorsFirstname().SendKeys(FirstName);
+            EditContractorsLastname().SendKeys(LastName);
+        }
+        public void FillAllContractorFieldsCreate(string PCCId, string FirstName, string LastName)
+        {
+            EditContractorsPccId().SendKeys(PCCId);
+            CreateContractorsValidName().SendKeys(FirstName);
+            CreateContractorsValidLastName().SendKeys(LastName);
+        }
     }
 }

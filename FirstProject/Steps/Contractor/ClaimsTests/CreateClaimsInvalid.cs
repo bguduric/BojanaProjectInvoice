@@ -67,13 +67,8 @@ namespace FirstProject.Steps.Contractor.ClaimsTests
         [When(@"Contractor enters invalid values in accounting number to pay input and clicks on create button")]
         public void ContractorEntersUnvalidValuesInAccNumberToPay()
         {
-            ContrClaimsPage.ConAccNumberToPay().SendKeys(invalid_val);
-            ContrClaimsPage.MonthlyClaimContr().Clear();
-            ContrClaimsPage.MonthlyClaimContr().SendKeys("0" + number);
-            ContrClaimsPage.BicycleContr().Clear();
-            ContrClaimsPage.BicycleContr().SendKeys("0" + number);
-            ContrClaimsPage.UniquaContr().Clear();
-            ContrClaimsPage.UniquaContr().SendKeys("0" + number);
+            ContrClaimsPage.ClearAllFieldsClaims();
+            ContrClaimsPage.FillAllClaimsFields(invalid_val, "0" + number, "0" + number, "0" + number);
             ContrClaimsPage.CreateClaimButtonContr().Click();
         }
         [Then(@"Messages under inputs are showed 2")]

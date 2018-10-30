@@ -104,13 +104,8 @@ namespace FirstProject.Steps.Contractor
         [When(@"Contractor enters Invalid Values in input fields")]
         public void ContractorEntersInvalidValuesInInputFields()
         {
-            contractorProfile.ContrAddress().SendKeys(special_char);
-            contractorProfile.ContrBankName().SendKeys(special_char);
-            contractorProfile.ContrAccountNumber().SendKeys(special_char);
-            contractorProfile.ContrAgencyName().SendKeys(special_char);
-            contractorProfile.RegistryCountryNum().SendKeys(special_char);
-            contractorProfile.TaxIdentNum().SendKeys(invalid_alph);
-            contractorProfile.ContrTelephone().SendKeys(special_char);
+            contractorProfile.FillAllProfileFields(special_char, special_char, special_char,
+        special_char, special_char, invalid_alph, special_char);      
             contractorProfile.ContrProfileSaveNum().Click();
         }
         [Then(@"Error messages are showed under Inputs 2")]
@@ -157,13 +152,8 @@ namespace FirstProject.Steps.Contractor
         public void ContractorEntersNewValidValues()
         {
             contractorProfile.ClearAllFieldsProfile();
-            contractorProfile.ContrAddress().SendKeys(new_address);
-            contractorProfile.ContrBankName().SendKeys(new_bankname);
-            contractorProfile.ContrAccountNumber().SendKeys(new_number);
-            contractorProfile.ContrAgencyName().SendKeys(new_agency_name);
-            contractorProfile.RegistryCountryNum().SendKeys(new_registry_country);
-            contractorProfile.TaxIdentNum().SendKeys(new_tax_ident_num);
-            contractorProfile.ContrTelephone().SendKeys(new_telephone);
+            contractorProfile.FillAllProfileFields(new_address,new_bankname,new_number,
+             new_agency_name,  new_registry_country,  new_tax_ident_num,  new_telephone);         
             contractorProfile.ContrProfileSaveNum().Click();
         }
         [Then(@"Contractor is redirected on create claim page")]

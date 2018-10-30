@@ -51,15 +51,8 @@ namespace FirstProject.Steps.Contractor.ClaimsTests
         public void ContractorSelectAccPeriodAndEnterValidValues()
         {
             ContrClaims.RandomContAccountingPeriod();
-            ContrClaims.ConAccNumberToPay().Clear();
-            ContrClaims.ConAccNumberToPay().SendKeys(acc_num_claim);
-            ContrClaims.MonthlyClaimContr().Clear();
-            ContrClaims.MonthlyClaimContr().SendKeys(monthly_claim);
-            ContrClaims.UniquaContr().Clear();
-            ContrClaims.UniquaContr().SendKeys(uniqua);
-            ContrClaims.BicycleContr().Clear();
-            ContrClaims.BicycleContr().SendKeys(bicycle);
-
+            ContrClaims.ClearAllFieldsClaims();
+            ContrClaims.FillAllClaimsFields(acc_num_claim, monthly_claim, uniqua, bicycle);       
             ContrClaims.CreateClaimButtonContr().Click();
         }
         [Then(@"Contractor is redirected to Claim list and new claim is visible in the table 1")]
@@ -104,13 +97,8 @@ namespace FirstProject.Steps.Contractor.ClaimsTests
         [When(@"Contractor enters invalid values in Edit page form")]
         public void ContractorEntersInvalidValuesInEditPageForm()
         {
-            ContrClaims.ConAccNumberToPay().SendKeys(invalid_values);
-            ContrClaims.MonthlyClaimContr().Clear();
-            ContrClaims.MonthlyClaimContr().SendKeys("0" + number);
-            ContrClaims.BicycleContr().Clear();
-            ContrClaims.BicycleContr().SendKeys("0" + number);
-            ContrClaims.UniquaContr().Clear();
-            ContrClaims.UniquaContr().SendKeys("0" + number);
+            ContrClaims.ClearAllFieldsClaims();
+            ContrClaims.FillAllClaimsFields(invalid_values, "0" + number, "0" + number, "0" + number);
             ContrClaims.EditClaimSaveButton().Click();
         }
         [Then(@"Message about error under Account number input is showed")]
@@ -135,14 +123,8 @@ namespace FirstProject.Steps.Contractor.ClaimsTests
         [When(@"Contractor enter valid values and clicks save button")]
         public void ContractorEnterValidValuesAndClicksSaveButton()
         {
-            ContrClaims.ConAccNumberToPay().Clear();
-            ContrClaims.ConAccNumberToPay().SendKeys(acc_num_claim2);
-            ContrClaims.MonthlyClaimContr().Clear();
-            ContrClaims.MonthlyClaimContr().SendKeys(monthly_claim);
-            ContrClaims.UniquaContr().Clear();
-            ContrClaims.UniquaContr().SendKeys(uniqua);
-            ContrClaims.BicycleContr().Clear();
-            ContrClaims.BicycleContr().SendKeys(bicycle);
+            ContrClaims.ClearAllFieldsClaims();
+            ContrClaims.FillAllClaimsFields(acc_num_claim2, monthly_claim, uniqua, bicycle);
             ContrClaims.EditClaimSaveButton().Click();
         }
         [Then(@"Contractor is successfully edited and visible in table")]

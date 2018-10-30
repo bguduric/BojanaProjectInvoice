@@ -205,5 +205,20 @@ namespace FirstProject.Pages.Contractor
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(home_form));
         }
+        public void ClearAllFieldsClaims()
+        {
+            ConAccNumberToPay().Clear();
+            MonthlyClaimContr().Clear();
+            BicycleContr().Clear();
+            UniquaContr().Clear();
+        }
+        public void FillAllClaimsFields(string acc_num_claim, string uniqua, string monthly_claim,
+         string bicycle)
+        {
+            ConAccNumberToPay().SendKeys(acc_num_claim);
+            MonthlyClaimContr().SendKeys(uniqua);
+            BicycleContr().SendKeys(monthly_claim);
+            UniquaContr().SendKeys(bicycle);         
+        }
     }
 }

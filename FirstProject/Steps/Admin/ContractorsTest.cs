@@ -103,9 +103,7 @@ namespace FirstProject.Steps.Admin
         public void InvalidValuesCreateContractorTest()
         {
             adminContraCreate.CreateContractorsInputUsername().SendKeys(invalid_char);
-            adminContraCreate.CreateContractorsInputPCCId().SendKeys("-" + random_num);
-            adminContraCreate.CreateContractorsValidName().SendKeys(invalid_char);
-            adminContraCreate.CreateContractorsValidLastName().SendKeys(invalid_char);
+            adminContraCreate.FillAllContractorFieldsCreate("-" + random_num, invalid_char, invalid_char);
             adminContraCreate.ContractorsSaveButton().Click();
             Assert.AreEqual("http://intnstest:50080/ContractorDatas/Create", Driver.Url);
 
@@ -134,10 +132,9 @@ namespace FirstProject.Steps.Admin
         [When(@"User enters username and pccid that already exist")]
         public void UserEntersUsernameAndPccidThatAlreadyExistCreateTest()
         {
-            adminContraCreate.CreateContractorsInputUsername().Clear();
+            adminContraCreate.ClearAllFieldsEdit();
             adminContraCreate.CreateContractorsInputUsername().SendKeys("IQService.contractor2");
-            adminContraCreate.CreateContractorsInputPCCId().Clear();
-            adminContraCreate.CreateContractorsInputPCCId().SendKeys("34243");
+            adminContraCreate.FillAllContractorFieldsCreate("34243", invalid_char, invalid_char);    
             adminContraCreate.ContractorsSaveButton().Click();
             Assert.AreEqual("http://intnstest:50080/ContractorDatas/Create", Driver.Url);
 
@@ -175,9 +172,7 @@ namespace FirstProject.Steps.Admin
         public void UserEntersValidValuesInCreateContractorsPageTest()
         {
             adminContraCreate.CreateContractorsInputUsername().SendKeys("Tester." + username);
-            adminContraCreate.CreateContractorsInputPCCId().SendKeys(PCCId);
-            adminContraCreate.CreateContractorsValidName().SendKeys(FirstName);
-            adminContraCreate.CreateContractorsValidLastName().SendKeys(LastName);
+            adminContraCreate.FillAllContractorFieldsCreate(PCCId, FirstName, LastName);
             adminContraCreate.ContractorsSaveButton().Click();
             Assert.AreEqual("http://intnstest:50080/ContractorDatas", Driver.Url);
 
@@ -239,9 +234,11 @@ namespace FirstProject.Steps.Admin
         [When(@"User enters negativ pcc id and invalid first name and last name")]
         public void UserEntersInvalidPccIdAndFirstAndLastNameTest()
         {
-            adminContraCreate.EditContractorsPccId().SendKeys("-" + random_num);
-            adminContraCreate.EditContractorsFirstname().SendKeys(invalid_char);
-            adminContraCreate.EditContractorsLastname().SendKeys(invalid_char);
+            adminContraCreate.FillAllContractorFieldsCreate("-" + random_num, invalid_char, invalid_char);
+
+            //adminContraCreate.EditContractorsPccId().SendKeys("-" + random_num);
+            //adminContraCreate.EditContractorsFirstname().SendKeys(invalid_char);
+            //adminContraCreate.EditContractorsLastname().SendKeys(invalid_char);
             adminContraCreate.EditContractorsSave().Click();
         }
         [Then(@"Error messages are showed 5")]
@@ -267,9 +264,11 @@ namespace FirstProject.Steps.Admin
         public void UserEnterPccIdThatAlreadyExistsEditTest()
         {
             adminContraCreate.ClearAllFieldsEdit();
-            adminContraCreate.CreateContractorsInputPCCId().SendKeys("34243");
-            adminContraCreate.EditContractorsFirstname().SendKeys(FirstName2);
-            adminContraCreate.EditContractorsLastname().SendKeys(FirstName2);
+            adminContraCreate.FillAllContractorFieldsEdit("34243", invalid_char, invalid_char);
+
+            //adminContraCreate.CreateContractorsInputPCCId().SendKeys("34243");
+            //adminContraCreate.EditContractorsFirstname().SendKeys(FirstName2);
+            //adminContraCreate.EditContractorsLastname().SendKeys(FirstName2);
             adminContraCreate.EditContractorsSave().Click();
         }
         [Then(@"Error message is showed")]
@@ -292,9 +291,7 @@ namespace FirstProject.Steps.Admin
         public void AdminEditContractorTest()
         {
             adminContraCreate.ClearAllFieldsEdit();
-            adminContraCreate.EditContractorsPccId().SendKeys(PCCId2);
-            adminContraCreate.EditContractorsFirstname().SendKeys(FirstName2);
-            adminContraCreate.EditContractorsLastname().SendKeys(LastName2);
+            adminContraCreate.FillAllContractorFieldsEdit(PCCId2, FirstName2, LastName2);       
             adminContraCreate.EditContractorsSave().Click();
             Assert.AreEqual("http://intnstest:50080/ContractorDatas", Driver.Url);
 

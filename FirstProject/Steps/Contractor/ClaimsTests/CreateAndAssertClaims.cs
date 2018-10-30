@@ -52,14 +52,8 @@ namespace FirstProject.Steps.Contractor.ClaimsTests
         public void ContractorSelectAccPeriodAndEnterValidValues()
         {
             ContrClaims.RandomContAccountingPeriod();
-            ContrClaims.ConAccNumberToPay().Clear();
-            ContrClaims.ConAccNumberToPay().SendKeys(acc_num_claim);
-            ContrClaims.MonthlyClaimContr().Clear();
-            ContrClaims.MonthlyClaimContr().SendKeys(monthly_claim);
-            ContrClaims.UniquaContr().Clear();
-            ContrClaims.UniquaContr().SendKeys(uniqua);
-            ContrClaims.BicycleContr().Clear();
-            ContrClaims.BicycleContr().SendKeys(bicycle);
+            ContrClaims.ClearAllFieldsClaims();
+            ContrClaims.FillAllClaimsFields(acc_num_claim, monthly_claim, uniqua, bicycle);
             ContrClaims.CreateClaimButtonContr().Click();
             Assert.AreEqual("http://intnstest:50080/Claims/ContractorClaimsIndex", Driver.Url);
 

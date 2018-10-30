@@ -144,5 +144,16 @@ namespace FirstProject.Pages.Contractor
             ContrTelephone().Clear();
 
         }
+        public void FillAllProfileFields(string new_address, string new_bankname, string new_number,
+            string new_agency_name, string new_registry_country, string new_tax_ident_num, string new_telephone)
+        {
+            ContrAddress().SendKeys(new_address);
+            ContrBankName().SendKeys(new_bankname);
+            ContrAccountNumber().SendKeys(new_number);
+            ContrAgencyName().SendKeys(new_agency_name);
+            RegistryCountryNum().SendKeys(new_registry_country);
+            TaxIdentNum().SendKeys(new_tax_ident_num);
+            ContrTelephone().SendKeys(new_telephone);
+        }
     }
 }
